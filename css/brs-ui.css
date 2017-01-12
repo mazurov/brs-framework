@@ -1,0 +1,172 @@
+#brs-filters {
+  background-color: #e3e3e3;
+  padding: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+}
+
+#brs-list {
+ margin-top: 10px;
+ border-style: none;
+ width: 100%;
+ -webkit-border-radius: 10px;
+ -moz-border-radius: 10px;
+ border-radius: 10px;
+}
+
+#brs-list tr {
+  vertical-align: top;
+}
+
+#brs-list .brs-row-image {
+  width: 150px;
+}
+
+#brs-list hr {
+  display: block;
+  height: 0px;
+  border: 0;
+  border-top: 1px solid #e3e3e3;
+}
+
+#brs-pager {
+  margin-top: 5px;
+}
+
+#brs-repositories-table {
+  width: 100%;
+  text-align: center;
+}
+
+#brs-repositories {
+  background-color: #e3e3e3;
+  border-style:none;
+}
+
+.brs-filter {
+  margin-bottom: 2px;
+}
+
+.brs-row {
+  margin-bottom: 5px;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 2em;
+    right: 5px;
+    display: none;
+}
+
+.back-to-top:hover img {
+  opacity: 1;
+  filter: alpha(opacity=100); /* For IE8 and earlier */
+}
+
+.back-to-top img {
+  opacity: 0.4;
+  filter: alpha(opacity=40); /* For IE8 and earlier */
+}
+
+.brs-row-title {
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.brs-row-pubdate {
+  color: gray;
+  font-size: 85%;
+}
+
+.brs-row-unnumber {
+  margin-top: 10px;
+}
+
+#brs-list img.brs-thumbnail {
+  margin: 0;
+  position: absolute;
+  left: -32px;
+  top: -45px;
+}
+
+.image-cropper {
+  position: relative;
+  width: 145px;
+  height: 207px;
+  overflow: hidden;
+  border-width: 4px;
+  border-style: solid;
+}
+
+.brs-row-meta {
+  height: 190px;
+}
+
+.brs-description {
+  margin-top: 10px;
+}
+
+
+/*Basel*/
+.brs-convention-1a461182-6564-4e22-900b-9e06bcc90208 {
+  background-color:  #009800;
+  border-color:  #009800;
+  outline-color:  #009800;
+}
+
+/*Rotterdam*/
+.brs-convention-46dfc561-4d8c-4fe9-ab0e-1ca56ebe2c40 {
+  background-color: #000098;
+  border-color: #000098;
+  outline-color: #000098;
+}
+
+#brs-filters input[type=checkbox] {
+  border-style: none;
+  border-width: 0px;
+  outline-width: 2px;
+  outline-style: solid;
+  outline-offset: -1px;
+}
+/* Stockholm */
+.brs-convention-1cfa1310-5483-49c1-86d5-c46856086dcd {
+  background-color: #e5511e;
+  border-color: #e5511e;
+  outline-color: #e5511e;
+}
+
+.brs-files {
+  margin-left: 10px;
+}
+.brs-file {
+  margin-right: 20px;
+}
+
+/* Reset DNN styles */
+ul.k-pager-numbers li {
+  list-style: none;
+  line-height: 0em;
+}
+
+#brs-pager ul.k-pager-numbers .k-state-selected {
+  margin-top: 3px;
+}
+#brs-pager .k-icon {
+  margin-top: 3px;
+}
+
+.k-state-selected
+{
+    background-color:#26447F;
+    background-image: none, linear-gradient(to bottom, #26447F 0, #4C88FF 100%);
+    border-color: #26447F;
+}
+
+.k-state-selected span {
+      color: white;
+}
+
+.k-multiselect-wrap li {
+  padding-top: .15em;
+}
