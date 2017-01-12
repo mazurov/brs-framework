@@ -1,5 +1,4 @@
-# brs-odata
-
+# brs-framework
 JavaScript library for accessing and displaying information from the
 BRS M-Files service.
 
