@@ -7,13 +7,21 @@
 		"uuidString": "1D30EED7-AAD4-461C-817D-965339444DEB"
 		}
 	],
-"creatorBuild": "25479",
+"creatorBuild": "25504",
 "files": {
 	"\/.jshintrc": {
 		"ft": 8192,
 		"oA": 2,
 		"oAP": "\/.jshintrc",
 		"oF": 0
+		},
+	"\/.vscode\/settings.json": {
+		"ft": 524288,
+		"oA": 1,
+		"oAP": "\/.vscode\/settings-min.json",
+		"oF": 0,
+		"oO": 0,
+		"oS": 1
 		},
 	"\/css\/brs-ui-min.css": {
 		"aP": 0,
@@ -47,7 +55,7 @@
 		"oA": 0,
 		"oAP": "\/js\/app-min.js",
 		"oF": 0,
-		"sC": 1,
+		"sC": 0,
 		"tS": 0
 		},
 	"\/README.md": {
@@ -74,7 +82,7 @@
 		"oA": 0,
 		"oAP": "\/js\/app.js",
 		"oF": 2,
-		"sC": 1,
+		"sC": 0,
 		"tS": 0
 		},
 	"\/src\/brs-odata.js": {
@@ -83,16 +91,16 @@
 		"oA": 1,
 		"oAP": "\/js\/brs.js",
 		"oF": 3,
-		"sC": 1,
+		"sC": 0,
 		"tS": 0
 		},
 	"\/src\/brs-ui.js": {
 		"ft": 64,
 		"mi": 1,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "\/src\/brs-ui-min.js",
-		"oF": 0,
-		"sC": 1,
+		"oF": 1,
+		"sC": 0,
 		"tS": 0
 		}
 	},
@@ -752,6 +760,10 @@
 			"active": 0,
 			"optionString": ""
 			},
+		"no-await-in-loop": {
+			"active": 0,
+			"optionString": ""
+			},
 		"no-bitwise": {
 			"active": 0,
 			"optionString": "{'allow': ['~'], 'int32Hint': true}"
@@ -1291,6 +1303,10 @@
 		"prefer-const": {
 			"active": 0,
 			"optionString": "{'destructuring': 'any', 'ignoreReadBeforeAssign': false}"
+			},
+		"prefer-destructuring": {
+			"active": 0,
+			"optionString": "{'array': true, 'object': true}, {'enforceForRenamedProperties': false}"
 			},
 		"prefer-numeric-literals": {
 			"active": 0,
@@ -1846,7 +1862,7 @@
 		"autoOutputPathStyle": 0,
 		"createSourceMap": 0,
 		"minifyOutput": 1,
-		"syntaxCheckerStyle": 1,
+		"syntaxCheckerStyle": 0,
 		"transpilerStyle": 0
 		},
 	"languageDefaultsJSON": {

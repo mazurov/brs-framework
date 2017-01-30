@@ -4,11 +4,12 @@
     <title>Example</title>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
         crossorigin="anonymous"></script>
-    <script src="http://cdn.kendostatic.com/2014.1.416/js/kendo.all.min.js" type="text/javascript"></script>
+    <script src="http://kendo.cdn.telerik.com/2017.1.118/js/kendo.all.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
     <script src="js/app.js"></script>
-    <link href="http://cdn.kendostatic.com/2014.1.416/styles/kendo.common.min.css" rel="stylesheet">
-    <link href="http://cdn.kendostatic.com/2014.1.416/styles/kendo.default.min.css" rel="stylesheet">
+    
+    <link href="http://kendo.cdn.telerik.com/2017.1.118/styles/kendo.common.min.css" rel="stylesheet">
+    <link href="http://kendo.cdn.telerik.com/2017.1.118/styles//kendo.default.min.css" rel="stylesheet">
     <link href="css/brs-ui.css" rel="stylesheet">
 </head>
 
@@ -16,40 +17,62 @@
     <form>
         <div id="brs-filters">
             <div class="brs-filter brs-terms-container">
-                Keywords
-                <select id="brs-terms"></select>
+                Conventions
+                <select data-brs-convention></select>
             </div>
-            <div class="brs-filter brs-repositories-container">
-                <table id="brs-repositories-table">
-                    <tbody>
-                        <tr id="brs-repositories">
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="brs-filter brs-terms-container">
+                Terms
+                <select data-brs-filter="term"></select>
             </div>
-            <div class="brs-cycles-container brs-filter">
-                Life cycles
-                <select id="brs-cycles"></select>
+            <div class="brs-filter brs-terms-container">
+                Programmes
+                <select data-brs-filter="programme"></select>
             </div>
-            <div class="brs-chemicals-container brs-filter">
-                Chemicals
-                <select id="brs-chemicals"></select>
+            <div class="brs-filter brs-terms-container">
+                Tags
+                <select data-brs-filter="tag"></select>
             </div>
-        </div>
-        <table id="brs-list">
-        </table>
-        <div class="row">
-            <div class="col-md-12" id="brs-pager"></div>
-        </div>
-        </div>
-        <a class="back-to-top" href="#">
-            <img src="http://amazurov.web.cern.ch/amazurov/brs/proto/img/back_to_top.png" alt="Back to top" title="Back to top" />
-        </a>
+            <div class="brs-filter brs-terms-container">
+                Meeting types
+                <select data-brs-filter="meetingtype"></select>
+            </div>
+            <div class="brs-filter brs-terms-container">
+                Chemical
+                <select data-brs-filter="chemical"></select>
+            </div>
+            <div class="brs-filter brs-terms-container">
+                Meetings
+                <select data-brs-filter="meeting"></select>
+            </div>
+            <div class="brs-filter brs-terms-container">
+                Document types
+                <select data-brs-filter="type"></select>
+            </div>
+
+            <div class="brs-filter brs-terms-container">
+                Results
+                <table data-brs-documents="brs-template"></table>
+            </div>
+
         <!-- END -->
         </div>
 
 
     </form>
+    <script id='brs-template' type='text/x-kendo-tmpl'>
+      <tr>
+        <!--<td class='arya-row-image'>
+            <div class=' image-cropper'>
+                <img class='arya-thumbnail' src="#= Files[0].ThumbnailUrl#">
+            </div>
+        </td>-->
+        <td>#= Convention#</td>
+        <td>#= UnNumber#</td>
+        <td>#= Copyright#</td>
+        <td>#= Author#</td>
+        <td>#= CountryFull#</td>
+      </tr>
+    </script>
 </body>
 
 </html>
