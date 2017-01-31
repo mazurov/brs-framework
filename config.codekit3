@@ -23,6 +23,12 @@
 		"oO": 0,
 		"oS": 1
 		},
+	"\/CNAME": {
+		"ft": 8192,
+		"oA": 2,
+		"oAP": "\/CNAME",
+		"oF": 0
+		},
 	"\/css\/brs-ui-min.css": {
 		"aP": 0,
 		"bl": 0,
