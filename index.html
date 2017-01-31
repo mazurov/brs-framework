@@ -2,6 +2,8 @@
 
 <head>
     <title>Example</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='content-type'>
+
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
         crossorigin="anonymous"></script>
     <script src="http://kendo.cdn.telerik.com/2017.1.118/js/kendo.all.min.js" type="text/javascript"></script>
@@ -19,6 +21,14 @@
             <div class="brs-filter brs-terms-container">
                 Conventions
                 <select data-brs-convention></select>
+            </div>
+            <div class="brs-filter brs-terms-container">
+                Languages
+                <select data-brs-language></select>
+            </div>
+            <div class="brs-filter brs-terms-container">
+                Year
+                <select data-brs-year></select>
             </div>
             <div class="brs-filter brs-terms-container">
                 Terms
@@ -51,8 +61,9 @@
 
             <div class="brs-filter brs-terms-container">
                 Results
-                <table data-brs-documents="brs-template"></table>
+                <table data-brs-documents="brs-template" data-brs-documents-pager="brs-documents-pager"></table>
             </div>
+            <div id="brs-documents-pager"></div>
 
         <!-- END -->
         </div>

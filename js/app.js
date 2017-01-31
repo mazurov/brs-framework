@@ -26,42 +26,61 @@ BrsOData.prototype.getDataSource = function(entryUrl, data, fields, sort) {
       data: function(data) { return data.value; },
       total: function(data) { return data["odata.count"]; },
       serverPaging: true,
-      model:{
-        fields: fields
-      }
+      model: {fields: fields}
     }
   });
 };
 
-BrsOData.prototype.CONVENTIONS = [
-  {
-    name: "basel"
-  },
-  {
-    name: "rotterdam"
-  },
-  {
-    name: "stockholm"
-  }
+BrsOData.prototype
+    .CONVENTIONS = [{name: "basel"}, {name: "rotterdam"}, {name: "stockholm"}];
+
+BrsOData.prototype.LANGUAGES = [
+  {code: "en", name: "English", title: "English"},
+  {code: "fr", name: "French", title: "Français"},
+  {code: "es", name: "Spanish", title: "Español"},
+  {code: "ru", name: "Russian", title: "Русский"},
+  {code: "ar", name: "Arabic", title: "العربية"},
+  {code: "zh", name: "Chinese", title: "中国的"}
 ];
 
 
 BrsOData.prototype.listTypesDataSource = function() {
-  return this.getDataSource("ValueTypes", undefined, { id: "ListPropertyTypeId", value: "Name"});
+  return this.getDataSource("ValueTypes", undefined,
+                            {id: "ListPropertyTypeId", value: "Name"});
 };
+
 
 BrsOData.prototype.conventionsDataSource = function() {
   return new kendo.data.DataSource({
     type: "json",
     data: this.CONVENTIONS,
     sort: {field: "value", dir: "asc"},
-    schema: {
-       model: {
-        fields:{
-          value: "name"
-        }
-       }
-    }
+    schema: {model: {fields: {value: "name"}}}
+  });
+};
+
+BrsOData.prototype.languagesDataSource = function() {
+  return new kendo.data.DataSource({
+    type: "json",
+    data: this.LANGUAGES,
+    schema: {model: {fields: {id: "code", value: "title"}}}
+  });
+};
+
+BrsOData.prototype.yearsDataSource = function(startYear) {
+  var currYear = new Date().getFullYear();
+  if (startYear > currYear){
+    throw "start year '" + startYear +"' should be less then current year '" + currYear + "'";
+  }
+
+  var years = [];
+  for (var y = currYear; y >= startYear; --y){
+    years.push({value: y});
+  }
+
+  return new kendo.data.DataSource({
+    type: "json",
+    data: years
   });
 };
 
@@ -69,31 +88,30 @@ BrsOData.prototype.listsDataSources = function() {
   var ds = this.listTypesDataSource();
   var self = this;
   return ds.read().then(
-    // ------------------------------------------------------------------------
-    function() {
-      var result = [];
-      _.each(ds.view(),
-      // ----------------------------------------------------------------------
-      function(view){
-        var ds = self.getDataSource("Values", 
-          {
-            $filter: "Types/any(x: x/ListPropertyTypeId eq guid'" + view.id + "')"
-          },
-          {
-            id: "ListPropertyId",
-            value: "Value"
-          },
-          {field: "value", dir:"asc"}
-        );
-        result.push({type: view.value, data: ds});
+      // ------------------------------------------------------------------------
+      function() {
+        var result = [];
+        _.each(
+            ds.view(),
+            // ----------------------------------------------------------------------
+            function(view) {
+              var ds = self.getDataSource(
+                  "Values",
+                  {
+                    $filter: "Types/any(x: x/ListPropertyTypeId eq guid'" +
+                                 view.id + "')"
+                  },
+                  {id: "ListPropertyId", value: "Value"},
+                  {field: "value", dir: "asc"});
+              result.push({type: view.value, data: ds});
+            });
+        return result;
+        // ----------------------------------------------------------------------
       });
-      return result;
-      // ----------------------------------------------------------------------
-  });
-    // ------------------------------------------------------------------------
+  // ------------------------------------------------------------------------
 };
 
-BrsOData.prototype.documentsDataSource = function(conventions){
+BrsOData.prototype.documentsDataSource = function(conventions) {
   return this.getDataSource("Documents", {"$expand": "Titles,Files"});
 };
 
@@ -172,52 +190,58 @@ BrsOData.prototype.documentsDataSource = function(conventions){
 // };
 
 
-var BrsODataUI = function(service) {
-    this.service = service;
-};
+var BrsODataUI = function(service) { this.service = service; };
 
 BrsODataUI.prototype.init = function() {
   this.service.listsDataSources().then(_processLists);
   _processConventions(this.service.conventionsDataSource());
   _processDocuments(this.service.documentsDataSource());
+  _processLanguages(this.service.languagesDataSource());
+  _processYears(this.service.yearsDataSource(2005));
 
   // --------------------------------------------------------------------------
-  function _processLists(dss){
-    $("select[data-brs-filter]").each(function(index, el){
-        var type = $(el).data("brs-filter");
-        var ds = _.find(dss, function(o){return o.type == type;}).data;
+  function _processLists(dss) {
+    $("select[data-brs-filter]").each(function(index, el) {
+      var type = $(el).data("brs-filter");
+      var ds = _.find(dss, function(o) { return o.type == type; }).data;
 
-        $(el).kendoMultiSelect(
-            {
-                dataSource: ds,
-                dataTextField: "value",
-                dataValueField: "id"
-            }
-        );    
+      $(el).kendoMultiSelect(
+          {dataSource: ds, dataTextField: "value", dataValueField: "id"});
     });
   }
 
-  function _processConventions(ds){
-       $("select[data-brs-convention]").each(function(index, el){
-        $(el).kendoMultiSelect(
-            {
-                dataSource: ds,
-                dataTextField: "value",
-                dataValueField: "value"
-            }
-        );    
+  function _processConventions(ds) {
+    $("select[data-brs-convention]").each(function(index, el) {
+      $(el).kendoMultiSelect(
+          {dataSource: ds, dataTextField: "value", dataValueField: "value"});
     });
   }
 
-  function _processDocuments(ds){
-       $("table[data-brs-documents]").each(function(index, el){
-        var tmpl = $("#" + $(el).data("brs-documents"));
-        $(el).kendoListView(
-            {
-                dataSource: ds,
-                template: tmpl.html()
-            }
-        );    
+  function _processLanguages(ds) {
+    $("select[data-brs-language]").each(function(index, el) {
+      $(el).kendoMultiSelect(
+          {dataSource: ds, dataTextField: "value", dataValueField: "id"});
+    });
+  }
+
+  function _processYears(ds) {
+    console.log(ds);
+    $("select[data-brs-year]").each(function(index, el) {
+
+      $(el).kendoMultiSelect(
+          {dataSource: ds, dataTextField: "value", dataValueField: "value"});
+    });
+  }
+
+  function _processDocuments(ds) {
+    $("table[data-brs-documents]").each(function(index, el) {
+      var tmpl = $("#" + $(el).data("brs-documents"));
+      var pager = $("#" + $(el).data("brs-documents-pager"));
+
+      $(el).kendoListView({dataSource: ds, template: tmpl.html()});
+      pager.kendoPager({
+         dataSource: ds
+      });
     });
   }
 
