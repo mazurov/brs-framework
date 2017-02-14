@@ -43,6 +43,16 @@ BrsOData.prototype.LANGUAGES = [
   {code: "zh", name: "Chinese", title: "中国的"}
 ];
 
+BrsOData.prototype.LISTTYPETOFIELD = {
+    term: 'Terms',
+    programme: 'Programs',
+    tag: 'Tags',
+    meetingtype: 'MeetingTypes',
+    chemical: 'Chemicals',
+    meeting: 'Meetings',
+    type: 'Types'
+};
+
 
 BrsOData.prototype.listTypesDataSource = function() {
   return this.getDataSource("ValueTypes", undefined,
@@ -83,7 +93,9 @@ BrsOData.prototype.yearsDataSource = function(startYear) {
     data: years
   });
 };
-
+BrsOData.prototype.listTypeToField = function(name) {
+  return this.LISTTYPETOFIELD[name];
+}
 BrsOData.prototype.listsDataSources = function() {
   var ds = this.listTypesDataSource();
   var self = this;
@@ -110,81 +122,53 @@ BrsOData.prototype.listsDataSources = function() {
       });
   // ------------------------------------------------------------------------
 };
+BrsOData.prototype._odataOr = function(field, values) {
+  var exp = [];
+  for(var i in values){
+     exp.push(field + " eq '" + values[i] + "'");
+  }
+  return exp.join(' or ');
+}
 
-BrsOData.prototype.documentsDataSource = function(conventions) {
-  return this.getDataSource("Documents", {"$expand": "Titles,Files"});
+BrsOData.prototype._odataExpandOr = function(expand, field, values) {
+  var exp = [];
+  for(var i in values){
+     var strValue = "'" + values[i] + "'";
+     if (this.isGUID(values[i])){
+       strValue = 'guid' + strValue;
+     } 
+     exp.push(expand + "/any(x: x/" + field + " eq " + strValue + ")");
+  }
+  return exp.join(' or ');
+}
+
+
+BrsOData.prototype.isGUID = function(value){
+  var regexGuid = /^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$/gi;
+  return regexGuid.test(value);
+}
+BrsOData.prototype.documentsDataSource = function(filters) {
+  var andFilter = [];
+  var filter = '';
+  if (filters){
+    for(var type in filters) {
+      var values = filters[type];
+      if (values.length > 0) {
+        switch (type) {
+          case 'convention':
+            andFilter.push('(' + this._odataOr('Convention', values) + ')');
+            break;
+          case 'language':
+            andFilter.push('(' + this._odataExpandOr('Titles', 'Language', values) + ')');
+            break;
+          default:
+            var expand = this.listTypeToField(type)
+            andFilter.push('(' + this._odataExpandOr(expand, 'ListPropertyId', values) + ')');
+            break;
+        }
+      }
+    }
+  }
+  filter = andFilter.join(' and ');
+  return this.getDataSource("Documents", {"$expand": "Titles,Files", "$filter": filter});
 };
-
-
-// BrsOData.prototype.loadValuesByType = function(type) {
-//   return $.getJSON(this.url + "/Values?$callback=?", {
-//                      "$filter": "Types/any(x: x/ListPropertyTypeId eq guid'"
-//                      +
-//                          type.ListPropertyTypeId + "')",
-//                      "$orderby": "Value",
-//                      "$format": "json",
-//                    }).done(function(data, status, jqXHR) {
-//     data.type = type.Name;
-//     return;
-//   }).fail(this.fail);
-// };
-
-// BrsOData.prototype.loadValuesByTypes = function(data, textStatus, jqXHR) {
-//   var promises = [];
-//   var self = this;
-
-//   _.each(data.value,
-//          function(type) { promises.push(self.loadValuesByType(type)); });
-//   var last = $.when.apply($, promises).then(function() {
-//     var results = [];
-//     _.each(arguments, function(result) { results.push(result[0]); });
-//     return $.Deferred().resolve(results);
-//   }, this.fail);
-
-//   last.done(this.done);
-// };
-
-
-// /*  1. Load types
-//  *  2. Load values by type
-//  *
-//  *  "fail" callback is not executed in cross domain requests, including jsonp
-//  */
-// BrsOData.prototype.load = function() {
-//   jQuery.getJSON(this.url + "ValueTypes?$callback=?",
-//                  {"$orderby": "Name", "$format": "json"})
-//       .done(this.loadValuesByTypes.bind(this))
-//       .fail(this.fail);
-
-// };
-
-// /*
-//  * attributes: {"name":string, op: "eq" || "contains", "quote": bool,
-//  "value":
-//  * any}
-//  * links:  {"name":string, op: "eq" || "contains", "id": guid}
-//  */
-// BrsOData.prototype.findDocuments = function(attributes, links, done) {
-//   var filter = "";
-//   var delim = "";
-//   _.each(attributes, function(attr) {
-//     var quote = attr.quote ? "'" : "";
-//     filter += delim + " " + attr.name + " " + attr.op + " " + quote +
-//               attr.value + quote;
-//     delim = " and ";
-//   });
-//   _.each(links, function(link) {
-//     filter += delim + " " + link.name + "/any(x: x/ListPropertyId  " +
-//     link.op +
-//               " guid'" + link.id + "')";
-//     delim = " and ";
-//   });
-
-//   jQuery.getJSON(this.url + "Documents?$callback=?", {
-//                    "$filter": filter,
-//                    "$orderby": "PublicationDate desc",
-//                    "$format": "json"
-//                  })
-//       .done(done)
-//       .fail(this.fail);
-// };

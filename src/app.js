@@ -7,7 +7,7 @@ $(document).ready(function() {
   var fail = function() { console.error("SASHA", arguments); };
   var odata = new BrsOData('http://informea.pops.int/BrsDocuments/MFiles.svc/',
                            done, fail);
-  var ui = new BrsODataUI(odata);
+  var ui = new BrsODataUI(odata, "body");
   ui.init();
 //   var ds = odata.listsDataSources();
 //   ds.then(function(result){

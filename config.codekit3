@@ -118,7 +118,7 @@
 	"creationDate": 505566166,
 	"displayValue": "brs-odata",
 	"displayValueWasSetByUser": 0,
-	"iconImageName": "meme-daenerys"
+	"iconImageName": "meme-leo"
 	},
 "projectSettings": {
 	"abortBuildOnError": 1,
@@ -132,7 +132,7 @@
 	"babelCustomPluginsList": "",
 	"babelCustomPresetsList": "",
 	"babelInsertModuleIDs": 0,
-	"babelModuleID": "brs-odata",
+	"babelModuleID": "",
 	"babelNoComments": 0,
 	"babelPlugins": {
 		"async-generator-functions": {
@@ -374,7 +374,7 @@
 	"bowerUseExactVersion": 0,
 	"browserRefreshDelay": 0,
 	"buildFolderActive": 0,
-	"buildFolderName": "js",
+	"buildFolderName": "build",
 	"cleanBuild": 1,
 	"coffeeLintFlags2": {
 		"arrow_spacing": {
@@ -1455,7 +1455,7 @@
 	"externalServerAddress": "http:\/\/localhost:8888",
 	"gitIgnoreBuildFolder": 1,
 	"hideConfigFile": 0,
-	"jsCheckerReservedNamesString": "\"_\"",
+	"jsCheckerReservedNamesString": "",
 	"jsHintFlags2": {
 		"asi": {
 			"active": 0,
@@ -1494,7 +1494,7 @@
 			"flagValue": -1
 			},
 		"devel": {
-			"active": 1,
+			"active": 0,
 			"flagValue": -1
 			},
 		"dojo": {
@@ -1518,7 +1518,7 @@
 			"flagValue": -1
 			},
 		"esnext": {
-			"active": 1,
+			"active": 0,
 			"flagValue": -1
 			},
 		"evil": {
@@ -1817,7 +1817,7 @@
 		"syntaxCheckerStyle": 1
 		},
 	"languageDefaultsCSS": {
-		"autoOutputAction": 2,
+		"autoOutputAction": 0,
 		"autoOutputPathFilenamePattern": "*-min.css",
 		"autoOutputPathRelativePath": "",
 		"autoOutputPathReplace1": "",
@@ -1825,7 +1825,7 @@
 		"autoOutputPathStyle": 0,
 		"createSourceMap": 0,
 		"outputStyle": 3,
-		"shouldRunAutoprefixer": 0,
+		"shouldRunAutoprefixer": 1,
 		"shouldRunBless": 0
 		},
 	"languageDefaultsGIF": {
@@ -1868,7 +1868,7 @@
 		"autoOutputPathStyle": 0,
 		"createSourceMap": 0,
 		"minifyOutput": 1,
-		"syntaxCheckerStyle": 0,
+		"syntaxCheckerStyle": 1,
 		"transpilerStyle": 0
 		},
 	"languageDefaultsJSON": {
@@ -2037,7 +2037,7 @@
 		],
 	"previewPathAddition": "",
 	"skippedFoldersString": "log, _logs, logs, _cache, cache, \/storage\/framework\/sessions, node_modules",
-	"sourceFolderName": "src",
+	"sourceFolderName": "source",
 	"uglifyDefinesString": "",
 	"uglifyFlags2": {
 		"ascii-only": {

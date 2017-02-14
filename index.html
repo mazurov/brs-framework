@@ -20,54 +20,55 @@
         <div id="brs-filters">
             <div class="brs-filter brs-terms-container">
                 Conventions
-                <select data-brs-convention></select>
+                <select data-brs-filter="convention"></select>
             </div>
             <div class="brs-filter brs-terms-container">
                 Languages
-                <select data-brs-language></select>
+                <select data-brs-filter="language"></select>
             </div>
             <div class="brs-filter brs-terms-container">
                 Year
-                <select data-brs-year></select>
+                <select data-brs-filter="year"></select>
             </div>
             <div class="brs-filter brs-terms-container">
                 Terms
-                <select data-brs-filter="term"></select>
+                <select data-brs-filter="term" data-brs-list></select>
             </div>
             <div class="brs-filter brs-terms-container">
                 Programmes
-                <select data-brs-filter="programme"></select>
+                <select data-brs-filter="programme" data-brs-list></select>
             </div>
             <div class="brs-filter brs-terms-container">
                 Tags
-                <select data-brs-filter="tag"></select>
+                <select data-brs-filter="tag" data-brs-list></select>
             </div>
             <div class="brs-filter brs-terms-container">
                 Meeting types
-                <select data-brs-filter="meetingtype"></select>
+                <select data-brs-filter="meetingtype" data-brs-list></select>
             </div>
             <div class="brs-filter brs-terms-container">
                 Chemical
-                <select data-brs-filter="chemical"></select>
+                <select data-brs-filter="chemical" data-brs-list></select>
             </div>
             <div class="brs-filter brs-terms-container">
                 Meetings
-                <select data-brs-filter="meeting"></select>
+                <select data-brs-filter="meeting" data-brs-list></select>
             </div>
             <div class="brs-filter brs-terms-container">
                 Document types
-                <select data-brs-filter="type"></select>
+                <select data-brs-filter="type" data-brs-list></select>
             </div>
-
+         <!-- END: filters -->
+         <div data-brs-filters-loading></div>
+         </div>
+         <div>
             <div class="brs-filter brs-terms-container">
                 Results
                 <table data-brs-documents="brs-template" data-brs-documents-pager="brs-documents-pager"></table>
             </div>
             <div id="brs-documents-pager"></div>
-
-        <!-- END -->
-        </div>
-
+         </div>
+ 
 
     </form>
     <script id='brs-template' type='text/x-kendo-tmpl'>
