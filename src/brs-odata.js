@@ -4,6 +4,29 @@ var BrsOData = function(url, done, fail) {
   this.done = done || function() {};
 };
 
+BrsOData.CONVENTIONS = [{name: "basel"}, {name: "rotterdam"}, {name: "stockholm"}];
+
+BrsOData.LANGUAGES = [
+  {id: "en", name: "English", value: "English"},
+  {id: "fr", name: "French", value: "Français"},
+  {id: "es", name: "Spanish", value: "Español"},
+  {id: "ru", name: "Russian", value: "Русский"},
+  {id: "ar", name: "Arabic", value: "العربية"},
+  {id: "zh", name: "Chinese", value: "中国的"}
+];
+
+
+BrsOData.LISTTYPETOFIELD = {
+    term: 'Terms',
+    programme: 'Programs',
+    tag: 'Tags',
+    meetingtype: 'MeetingTypes',
+    chemical: 'Chemicals',
+    meeting: 'Meetings',
+    type: 'Types'
+};
+
+
 BrsOData.prototype.ODATA3SCHEMA = {
   data: function(data) { return data.value; },
   total: function(data) { return data["odata.count"]; }
@@ -21,6 +44,8 @@ BrsOData.prototype.getDataSource = function(entryUrl, data, fields, sort) {
                  }
                },
     sort: sort,
+    serverPaging: true,
+    pageSize: 5,
     serverSorting: true,
     schema: {
       data: function(data) { return data.value; },
@@ -31,27 +56,6 @@ BrsOData.prototype.getDataSource = function(entryUrl, data, fields, sort) {
   });
 };
 
-BrsOData.prototype
-    .CONVENTIONS = [{name: "basel"}, {name: "rotterdam"}, {name: "stockholm"}];
-
-BrsOData.prototype.LANGUAGES = [
-  {code: "en", name: "English", title: "English"},
-  {code: "fr", name: "French", title: "Français"},
-  {code: "es", name: "Spanish", title: "Español"},
-  {code: "ru", name: "Russian", title: "Русский"},
-  {code: "ar", name: "Arabic", title: "العربية"},
-  {code: "zh", name: "Chinese", title: "中国的"}
-];
-
-BrsOData.prototype.LISTTYPETOFIELD = {
-    term: 'Terms',
-    programme: 'Programs',
-    tag: 'Tags',
-    meetingtype: 'MeetingTypes',
-    chemical: 'Chemicals',
-    meeting: 'Meetings',
-    type: 'Types'
-};
 
 
 BrsOData.prototype.listTypesDataSource = function() {
@@ -63,7 +67,7 @@ BrsOData.prototype.listTypesDataSource = function() {
 BrsOData.prototype.conventionsDataSource = function() {
   return new kendo.data.DataSource({
     type: "json",
-    data: this.CONVENTIONS,
+    data: BrsOData.CONVENTIONS.slice(),
     sort: {field: "value", dir: "asc"},
     schema: {model: {fields: {value: "name"}}}
   });
@@ -72,8 +76,7 @@ BrsOData.prototype.conventionsDataSource = function() {
 BrsOData.prototype.languagesDataSource = function() {
   return new kendo.data.DataSource({
     type: "json",
-    data: this.LANGUAGES,
-    schema: {model: {fields: {id: "code", value: "title"}}}
+    data: $.merge([], BrsOData.LANGUAGES)
   });
 };
 
@@ -94,7 +97,7 @@ BrsOData.prototype.yearsDataSource = function(startYear) {
   });
 };
 BrsOData.prototype.listTypeToField = function(name) {
-  return this.LISTTYPETOFIELD[name];
+  return BrsOData.LISTTYPETOFIELD[name];
 }
 BrsOData.prototype.listsDataSources = function() {
   var ds = this.listTypesDataSource();

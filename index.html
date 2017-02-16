@@ -4,12 +4,11 @@
     <title>Example</title>
     <meta content='text/html; charset=UTF-8' http-equiv='content-type'>
 
-    <script src="///code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-        crossorigin="anonymous"></script>
+    <script src="///code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="///kendo.cdn.telerik.com/2017.1.118/js/kendo.all.min.js" type="text/javascript"></script>
     <script src="///cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
     <script src="js/app.js"></script>
-    
+
     <link href="///kendo.cdn.telerik.com/2017.1.118/styles/kendo.common.min.css" rel="stylesheet">
     <link href="///kendo.cdn.telerik.com/2017.1.118/styles//kendo.default.min.css" rel="stylesheet">
     <link href="css/brs-ui.css" rel="stylesheet">
@@ -50,40 +49,75 @@
                 Chemical
                 <select data-brs-filter="chemical" data-brs-list></select>
             </div>
-            <div class="brs-filter brs-terms-container">
+            <!--<div class="brs-filter brs-terms-container">
                 Meetings
                 <select data-brs-filter="meeting" data-brs-list></select>
-            </div>
-            <div class="brs-filter brs-terms-container">
+            </div>-->
+            <!--<div class="brs-filter brs-terms-container">
                 Document types
                 <select data-brs-filter="type" data-brs-list></select>
-            </div>
-         <!-- END: filters -->
-         <div data-brs-filters-loading></div>
-         </div>
-         <div>
+            </div>-->
+            <!-- END: filters -->
+            <div data-brs-filters-loading></div>
+        </div>
+        <div>
             <div class="brs-filter brs-terms-container">
                 Results
-                <table data-brs-documents="brs-template" data-brs-documents-pager="brs-documents-pager"></table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>UNnumber</th>
+                            <th>Convention</th>
+                            <th>Party</th>
+                        </tr>
+                    </thead>
+                    <tbody data-brs-documents="brs-template" data-brs-documents-pager="brs-documents-pager">
+                    </tbody>
+                </table>
             </div>
             <div id="brs-documents-pager"></div>
-         </div>
- 
+        </div>
+
 
     </form>
+    <script id='brs-template-titles' type='text/x-kendo-tmpl'>
+        <div class="brs-tabstrip">
+            <ul>
+                # for (var j = 0; j < BrsOData.LANGUAGES.length; j++) { #
+                    # for (var i = 0; i < Titles.length; i++) { #
+                        # if (BrsOData.LANGUAGES[j].id == Titles[i].Language) {#
+                            <li class="brs-tab brs-tab-#: BrsOData.LANGUAGES[j].id#">  #= BrsOData.LANGUAGES[j].value #</li>
+                        # } #   
+                    # } #
+                # } #
+            </ul>
+            # for (var j = 0; j < BrsOData.LANGUAGES.length; j++) { #
+            
+                    # for (var i = 0; i < Titles.length; i++) { #
+                        # if (BrsOData.LANGUAGES[j].id == Titles[i].Language) {#
+                            <div>#= Titles[i].Value #</div>
+                        # } #   
+                    # } #
+            # } #
+
+        </div>
+    </script>
     <script id='brs-template' type='text/x-kendo-tmpl'>
-      <tr>
-        <!--<td class='arya-row-image'>
+
+        <tr>
+            <!--<td class='arya-row-image'>
             <div class=' image-cropper'>
                 <img class='arya-thumbnail' src="#= Files[0].ThumbnailUrl#">
             </div>
         </td>-->
-        <td>#= Convention#</td>
-        <td>#= UnNumber#</td>
-        <td>#= Copyright#</td>
-        <td>#= Author#</td>
-        <td>#= CountryFull#</td>
-      </tr>
+            <td>#= UnNumber#</td>
+            <td>#= Convention#</td>
+            <td>#= CountryFull != null? CountryFull: "" #</td>
+            <td>
+                
+                #= kendo.render(kendo.template($("\\#brs-template-titles").html()), [{Titles: Titles}]) #
+            </td>
+        </tr>
     </script>
 </body>
 

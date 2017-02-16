@@ -66,7 +66,6 @@ BrsODataUI.prototype.init = function() {
   }
 
   function _processYears(ds) {
-    console.log(ds);
     $("select[data-brs-filter='year']", this.parentEl).each(function(index, el) {
       $(el).kendoMultiSelect(
           {dataSource: ds, dataTextField: "value", dataValueField: "value", change: _onFiltersChange});
@@ -74,11 +73,32 @@ BrsODataUI.prototype.init = function() {
   }
 
   function _processDocuments(ds) {
-    $("table[data-brs-documents]", this.parentEl).each(function(index, el) {
-      var tmpl = $("#" + $(el).data("brs-documents"));
+    $("tbody[data-brs-documents]", this.parentEl).each(function(index, el) {
+      var tmpl = kendo.template($("#" + $(el).data("brs-documents")).html());
       var pager = $("#" + $(el).data("brs-documents-pager"));
 
-      $(el).kendoListView({dataSource: ds, template: tmpl.html()});
+      $(el).kendoListView({
+        dataSource: ds,
+        template: tmpl,
+        dataBound: function() { 
+          $(".brs-tabstrip", this.parentEl).each(
+            function() {
+               var tab;
+               if (self.filters.language.length == 0){
+                tab = $("li:first-child");
+               }else{
+                 for(var i = self.filters.language.length - 1; i >=0; i--){
+                    tab =  $(".brs-tab-" +  self.filters.language[i], this);
+                    if (tab.size() > 0) break;
+                 }
+               }
+               $(this).kendoTabStrip().data("kendoTabStrip").activateTab(tab);
+            }
+          );
+        
+        },
+
+      });
       pager.kendoPager({
          dataSource: ds
       });
