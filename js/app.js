@@ -236,6 +236,9 @@ BrsODataUI.prototype.init = function() {
   }
 
   function _processConventions(ds) {
+    $("select[data-brs-filter='convention']", this.parentEl).each(function(index, el){
+      console.log("SASHA", $(el));
+    });
     $("select[data-brs-filter='convention']", this.parentEl).each(function(index, el) {
       $(el).kendoMultiSelect(
           {dataSource: ds, dataTextField: "value", dataValueField: "value", change: _onFiltersChange});
