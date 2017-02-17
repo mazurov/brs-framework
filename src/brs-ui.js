@@ -73,6 +73,8 @@ BrsODataUI.prototype.init = function() {
   }
 
   function _processDocuments(ds) {
+    ds.pageSize(20);
+
     $("tbody[data-brs-documents]", this.parentEl).each(function(index, el) {
       var tmpl = kendo.template($("#" + $(el).data("brs-documents")).html());
       var pager = $("#" + $(el).data("brs-documents-pager"));

@@ -20,7 +20,7 @@ BrsOData.LISTTYPETOFIELD = {
     term: 'Terms',
     programme: 'Programs',
     tag: 'Tags',
-    meetingtype: 'MeetingTypes',
+    meetingtype: 'MeetingsTypes',
     chemical: 'Chemicals',
     meeting: 'Meetings',
     type: 'Types'
@@ -45,8 +45,7 @@ BrsOData.prototype.getDataSource = function(entryUrl, data, fields, sort) {
                },
     sort: sort,
     serverPaging: true,
-    pageSize: 5,
-    serverSorting: true,
+      serverSorting: true,
     schema: {
       data: function(data) { return data.value; },
       total: function(data) { return data["odata.count"]; },
@@ -127,8 +126,12 @@ BrsOData.prototype.listsDataSources = function() {
 };
 BrsOData.prototype._odataOr = function(field, values) {
   var exp = [];
+  var quote = "'";
   for(var i in values){
-     exp.push(field + " eq '" + values[i] + "'");
+    if(typeof values[i] == 'number'){
+	    quote = "";
+    }
+    exp.push(field + " eq " + quote + values[i] + quote);
   }
   return exp.join(' or ');
 }
@@ -164,6 +167,9 @@ BrsOData.prototype.documentsDataSource = function(filters) {
           case 'language':
             andFilter.push('(' + this._odataExpandOr('Titles', 'Language', values) + ')');
             break;
+          case 'year':
+            andFilter.push('(' + this._odataOr('year(PublicationDate)', values) + ')');
+            break;
           default:
             var expand = this.listTypeToField(type)
             andFilter.push('(' + this._odataExpandOr(expand, 'ListPropertyId', values) + ')');
@@ -173,7 +179,7 @@ BrsOData.prototype.documentsDataSource = function(filters) {
     }
   }
   filter = andFilter.join(' and ');
-  return this.getDataSource("Documents", {"$expand": "Titles,Files", "$filter": filter});
+  return this.getDataSource("Documents", {"$expand": "Titles,Descriptions,Files", "$filter": filter});
 };
 
 
@@ -252,6 +258,8 @@ BrsODataUI.prototype.init = function() {
   }
 
   function _processDocuments(ds) {
+    ds.pageSize(20);
+
     $("tbody[data-brs-documents]", this.parentEl).each(function(index, el) {
       var tmpl = kendo.template($("#" + $(el).data("brs-documents")).html());
       var pager = $("#" + $(el).data("brs-documents-pager"));

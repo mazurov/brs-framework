@@ -44,6 +44,21 @@
   border-style:none;
 }
 
+.brs-tab-title{
+  font-weight: bold;
+  font-size: normal;
+}
+
+.brs-tab-unnumber{
+  font-weight: bold;
+  font-size: small;
+  color: grey;
+}
+
+.brs-tab-description{
+  padding-top: 20px;
+}
+
 .brs-filter {
   margin-bottom: 2px;
 }
