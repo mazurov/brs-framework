@@ -102,7 +102,6 @@ BrsODataUI.prototype.init = function() {
           );
         
         },
-
       });
       pager.kendoPager({
          dataSource: ds
