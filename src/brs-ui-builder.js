@@ -63,7 +63,7 @@ $.fn.brsODataUIBuilder = function(filters) {
         "                                #}#   " +
         "                            # } #" +
         "                            # if (!found){#" +
-        "                                <li class=\"brs-tab brs-tab-#: Titles[j]#\">  #= Titles[j].LanguageFull #</li>" +
+        "                                <li class=\"brs-tab brs-tab-#: Titles[j].Language#\">  #= Titles[j].LanguageFull #</li>" +
         "                            # } #" +
         "                        # } #" +
         "                    </ul>" +
@@ -72,9 +72,9 @@ $.fn.brsODataUIBuilder = function(filters) {
         "                                # found = false; #" +
         "                                # if (BrsOData.LANGUAGES[i].id == Titles[j].Language) {#" +
         "                                    <div>" +
-        "                                        <div class=\"brs-tab-content brs-tab-title\">#: Titles[j].Value #</div>" +
+        "                                        <div class=\"brs-tab-content brs-tab-title\">#= Titles[j].Value #</div>" +
         "                                        <!--<div class=\"brs-tab-content brs-tab-unnumber\">#: UnNumber #</div>-->" +
-        "                                        <div class=\"brs-tab-content brs-tab-description\">#: Descriptions[j].Value #</div>" +
+        "                                        <div class=\"brs-tab-content brs-tab-description\">#= Descriptions[j].Value #</div>" +
         "                                        <div class=\"brs-tab-content brs-tab-files\">" +
         "                                            # for (var l = 0; l < Files.length; l++) { # " +
         "                                                    # if (Files[l].Language == Titles[j].Language) {#" +
