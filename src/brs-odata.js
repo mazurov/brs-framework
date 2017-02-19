@@ -12,7 +12,9 @@ BrsOData.LANGUAGES = [
   {id: "es", name: "Spanish", value: "Español"},
   {id: "ru", name: "Russian", value: "Русский"},
   {id: "ar", name: "Arabic", value: "العربية"},
-  {id: "zh", name: "Chinese", value: "中国的"}
+  {id: "zh", name: "Chinese", value: "中国的"},
+  {id: "pt", name: "Portuguese", value: "Portuguese"}
+  
 ];
 
 

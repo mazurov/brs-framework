@@ -7,7 +7,8 @@
     <script src="///code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="///kendo.cdn.telerik.com/2017.1.118/js/kendo.all.min.js" type="text/javascript"></script>
     <script src="///cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/brs.js" type="text/javascript"></script>
+    <script src="js/app.js" type="text/javascript"></script>
 
     <link href="///kendo.cdn.telerik.com/2017.1.118/styles/kendo.common.min.css" rel="stylesheet">
     <link href="///kendo.cdn.telerik.com/2017.1.118/styles//kendo.default.min.css" rel="stylesheet">
@@ -16,6 +17,8 @@
 
 <body>
     <form>
+        <div id="brs-builder"></div>
+        
         <div id="brs-filters">
             <div class="brs-filter brs-terms-container">
                 Conventions
@@ -62,7 +65,6 @@
         </div>
         <div>
             <div class="brs-filter brs-terms-container">
-                Results
                 <table>
                     <thead>
                         <tr>
@@ -73,68 +75,64 @@
                             <th>&nbsp;</th>
                         </tr>
                     </thead>
-                    <tbody data-brs-documents="brs-template" data-brs-documents-pager="brs-documents-pager">
+                    <tbody data-brs-documents>
                     </tbody>
                 </table>
             </div>
-            <div id="brs-documents-pager"></div>
+            <div class="brs-documents-pager"></div>
         </div>
 
 
     </form>
-    <script id='brs-template-titles' type='text/x-kendo-tmpl'>
-        <div class="brs-tabstrip">
-            <ul>
-                # for (var j = 0; j < Titles.length; j++) { #
-                    # for (var i = 0; i < BrsOData.LANGUAGES.length; i++) { #
-                        # found = false; #
-                        # if (BrsOData.LANGUAGES[i].id == Titles[j].Language) {#
-                            <li class="brs-tab brs-tab-#: BrsOData.LANGUAGES[i].id#">  #= BrsOData.LANGUAGES[i].value #</li>
-                          # found = true; break; # 
-                        #}#   
-                    # } #
-                    # if (!found){#
-                        <li class="brs-tab brs-tab-#: Titles[j]#">  #= Titles[j].LanguageFull #</li>
-                    # } #
-                # } #
-            </ul>
-            # for (var j = 0; j < Titles.length; j++) { #
-                    # for (var i = 0; i < BrsOData.LANGUAGES.length; i++) { #
-                        # found = false; #
-                        # if (BrsOData.LANGUAGES[i].id == Titles[j].Language) {#
-                            <div>
-                                <div class="brs-tab-content brs-tab-title">#: Titles[j].Value #</div>
-                                <!--<div class="brs-tab-content brs-tab-unnumber">#: UnNumber #</div>-->
-                                <div class="brs-tab-content brs-tab-description">#: Descriptions[j].Value #</div>
-                                <div class="brs-tab-content brs-tab-files">
-                                       # for (var l = 0; l < Files.length; l++) { # 
-                                            # if (Files[l].Language == Titles[j].Language) {#
-                                                <span class="brs-tab-files-link">
-                                                    <a href="#:Files[l].Url#">#:Files[l].Extension#</a>
-                                                </span>
-                                            #}#
-                                       
-                                       # } #
 
-                                </div>
-                            </div>
-                            # found = true; break; #
-                        # } #   
-                    # } #
-            # } #
-
-        </div>
-    </script>
     <script id='brs-template' type='text/x-kendo-tmpl'>
 
         <tr>
-            <!--<td>#= UnNumber#</td>-->
             <td>#= Convention#</td>
             <td>#= CountryFull != null? CountryFull: "" #</td>
             <td>#= PublicationDate != null? kendo.toString(kendo.parseDate(PublicationDate), "y"): "" #</td>
             <td>
-                
-                #= kendo.render(kendo.template($("\\#brs-template-titles").html()), [{Titles: Titles, Descriptions: Descriptions, Files: Files, UnNumber: UnNumber, found: false}]) #
+                 <div class="brs-tabstrip">
+                    <ul>
+                        #   var found = false;
+                            for (var j = 0; j < Titles.length; j++) { #
+                            # for (var i = 0; i < BrsOData.LANGUAGES.length; i++) { #
+                                # if (BrsOData.LANGUAGES[i].id == Titles[j].Language) {#
+                                    <li class="brs-tab brs-tab-#: BrsOData.LANGUAGES[i].id#">  #= BrsOData.LANGUAGES[i].value #</li>
+                                # found = true; break; # 
+                                #}#   
+                            # } #
+                            # if (!found){#
+                                <li class="brs-tab brs-tab-#: Titles[j]#">  #= Titles[j].LanguageFull #</li>
+                            # } #
+                        # } #
+                    </ul>
+                    # for (var j = 0; j < Titles.length; j++) { #
+                            # for (var i = 0; i < BrsOData.LANGUAGES.length; i++) { #
+                                # found = false; #
+                                # if (BrsOData.LANGUAGES[i].id == Titles[j].Language) {#
+                                    <div>
+                                        <div class="brs-tab-content brs-tab-title">#: Titles[j].Value #</div>
+                                        <!--<div class="brs-tab-content brs-tab-unnumber">#: UnNumber #</div>-->
+                                        <div class="brs-tab-content brs-tab-description">#: Descriptions[j].Value #</div>
+                                        <div class="brs-tab-content brs-tab-files">
+                                            # for (var l = 0; l < Files.length; l++) { # 
+                                                    # if (Files[l].Language == Titles[j].Language) {#
+                                                        <span class="brs-tab-files-link">
+                                                            <a href="#:Files[l].Url#">#:Files[l].Extension#</a>
+                                                        </span>
+                                                    #}#
+                                            
+                                            # } #
+
+                                        </div>
+                                    </div>
+                                    # found = true; break; #
+                                # } #   
+                            # } #
+                    # } #
+
+                </div>
             </td>
         </tr>
     </script>

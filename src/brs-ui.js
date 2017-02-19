@@ -1,7 +1,10 @@
-var BrsODataUI = function(service, parentEl) { 
-  this.service = service; 
-  this.parentEl = $(parentEl);
-  this.filters = {
+$.fn.brsODataUI = function(options) { 
+  var self = this;
+  var service = options.service; 
+  var predefined = options.predefined || {};
+  var template = options.template; 
+
+  var filters = {
     convention: [],
     language: [],
     year: [],
@@ -13,16 +16,14 @@ var BrsODataUI = function(service, parentEl) {
     meeting: [],
     type: []
   };
-};
 
-BrsODataUI.prototype.init = function() {
-  var self = this;
-  this.service.listsDataSources().then(_processLists);
-  _processConventions(this.service.conventionsDataSource());
-  _processDocuments(this.service.documentsDataSource());
-  _processLanguages(this.service.languagesDataSource());
-  _processYears(this.service.yearsDataSource(2005));
+  filters = jQuery.extend(filters, predefined);
 
+  service.listsDataSources().then(_processLists);
+  _processConventions(service.conventionsDataSource());
+  _processDocuments(service.documentsDataSource(filters));
+  _processLanguages(service.languagesDataSource());
+  _processYears(service.yearsDataSource(2005));
   // --------------------------------------------------------------------------
   // function _dataSourceRequest(startOrEnd){
   //   $("div[data-brs-filters-loading]").each(function(index, loadingEl){
@@ -33,35 +34,36 @@ BrsODataUI.prototype.init = function() {
   // --------------------------------------------------------------------------
   function _onFiltersChange(e) {
     var type = $(e.sender.element).data("brs-filter");
-    self.filters[type] = this.value();
+    filters[type] = this.value();
 
-    var ds = self.service.documentsDataSource(self.filters);
+    var ds = service.documentsDataSource(filters);
     _processDocuments(ds);
   }
 
   function _processLists(dss) {
-    $("select[data-brs-list]", this.parentEl).each(function(index, el) {
+    $("select[data-brs-list]", self.parentEl).each(function(index, el) {
       var type = $(el).data("brs-filter");
       var ds = _.find(dss, function(o) { return o.type == type; }).data;
-      //ds.bind("requestStart", _dataSourceRequest("start"));
-      //ds.bind("requestEnd", _dataSourceRequest("end"));
+
       $(el).kendoMultiSelect(
-          {dataSource: ds, dataTextField: "value", dataValueField: "id", change: _onFiltersChange});
+          {
+            dataSource: ds,
+            dataTextField: "value",
+            dataValueField: "id",
+            change: _onFiltersChange}
+      ).data("kendoMultiSelect").value(filters[type]);
     });
   }
 
   function _processConventions(ds) {
-    $("select[data-brs-filter='convention']", this.parentEl).each(function(index, el){
-      console.log("SASHA", $(el));
-    });
-    $("select[data-brs-filter='convention']", this.parentEl).each(function(index, el) {
+    $("select[data-brs-filter='convention']", self.parentEl).each(function(index, el) {
       $(el).kendoMultiSelect(
-          {dataSource: ds, dataTextField: "value", dataValueField: "value", change: _onFiltersChange});
+          {dataSource: ds, dataTextField: "value", dataValueField: "value", change: _onFiltersChange}).data("kendoMultiSelect").value(filters.convention);
     });
   }
 
   function _processLanguages(ds) {
-    $("select[data-brs-filter='language']", this.parentEl).each(function(index, el) {
+    $("select[data-brs-filter='language']", self.parentEl).each(function(index, el) {
 
       $(el).kendoMultiSelect(
           {dataSource: ds, dataTextField: "value", dataValueField: "id", change: _onFiltersChange});
@@ -69,7 +71,7 @@ BrsODataUI.prototype.init = function() {
   }
 
   function _processYears(ds) {
-    $("select[data-brs-filter='year']", this.parentEl).each(function(index, el) {
+    $("select[data-brs-filter='year']", self.parentEl).each(function(index, el) {
       $(el).kendoMultiSelect(
           {dataSource: ds, dataTextField: "value", dataValueField: "value", change: _onFiltersChange});
     });
@@ -77,23 +79,24 @@ BrsODataUI.prototype.init = function() {
 
   function _processDocuments(ds) {
     ds.pageSize(20);
+    ds.sort({ field: "PublicationDate", dir: "desc"});
 
-    $("tbody[data-brs-documents]", this.parentEl).each(function(index, el) {
-      var tmpl = kendo.template($("#" + $(el).data("brs-documents")).html());
-      var pager = $("#" + $(el).data("brs-documents-pager"));
+    $("tbody[data-brs-documents]", self.parentEl).each(function(index, el) {
+      var tmpl = template || kendo.template($("#brs-template").html());
+      var pager = $(".brs-documents-pager");
 
       $(el).kendoListView({
         dataSource: ds,
         template: tmpl,
         dataBound: function() { 
-          $(".brs-tabstrip", this.parentEl).each(
+          $(".brs-tabstrip", self).each(
             function() {
                var tab;
-               if (self.filters.language.length == 0){
+               if (filters.language.length == 0){
                 tab = $("li:first-child");
                }else{
-                 for(var i = self.filters.language.length - 1; i >=0; i--){
-                    tab =  $(".brs-tab-" +  self.filters.language[i], this);
+                 for(var i = filters.language.length - 1; i >=0; i--){
+                    tab =  $(".brs-tab-" +  filters.language[i], this);
                     if (tab.size() > 0) break;
                  }
                }
