@@ -28,6 +28,10 @@ $(document).ready(function() {
     {
        type: "language",
        title: "Language"
+    },
+    {
+       type: "country",
+       title: "Country"
     }
  ];
 
