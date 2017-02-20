@@ -69,7 +69,7 @@
 		},
 	"\/js\/app-builder.js": {
 		"ft": 64,
-		"mi": 1,
+		"mi": 0,
 		"oA": 0,
 		"oAP": "\/js\/app-builder-min.js",
 		"oF": 0,
@@ -96,7 +96,7 @@
 		},
 	"\/js\/app.js": {
 		"ft": 64,
-		"mi": 1,
+		"mi": 0,
 		"oA": 0,
 		"oAP": "\/js\/app-min.js",
 		"oF": 0,

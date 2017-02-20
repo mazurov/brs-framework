@@ -14,7 +14,8 @@ $.fn.brsODataUI = function(options) {
     meetingtype: [],
     chemical: [],
     meeting: [],
-    type: []
+    type: [],
+    country: []
   };
 
   filters = jQuery.extend(filters, predefined);
@@ -24,6 +25,7 @@ $.fn.brsODataUI = function(options) {
   _processDocuments(service.documentsDataSource(filters));
   _processLanguages(service.languagesDataSource());
   _processYears(service.yearsDataSource(2005));
+  _processCountries(service.countriesDataSource());
   // --------------------------------------------------------------------------
   // function _dataSourceRequest(startOrEnd){
   //   $("div[data-brs-filters-loading]").each(function(index, loadingEl){
@@ -34,8 +36,8 @@ $.fn.brsODataUI = function(options) {
   // --------------------------------------------------------------------------
   function _onFiltersChange(e) {
     var type = $(e.sender.element).data("brs-filter");
+    
     filters[type] = this.value();
-
     var ds = service.documentsDataSource(filters);
     _processDocuments(ds);
   }
@@ -74,6 +76,13 @@ $.fn.brsODataUI = function(options) {
     $("select[data-brs-filter='year']", self.parentEl).each(function(index, el) {
       $(el).kendoMultiSelect(
           {dataSource: ds, dataTextField: "value", dataValueField: "value", change: _onFiltersChange});
+    });
+  }
+
+  function _processCountries(ds) {
+    $("select[data-brs-filter='country']", self.parentEl).each(function(index, el) {
+      $(el).kendoMultiSelect(
+          {dataSource: ds, dataTextField: "value", dataValueField: "id", change: _onFiltersChange});
     });
   }
 

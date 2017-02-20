@@ -1,5 +1,7 @@
-var BrsOData = function(url, done, fail) {
+var BrsOData = function(url, urlProfiles, done, fail) {
   this.url = url;
+  this.urlProfiles = urlProfiles;
+
   this.fail = fail || function() {};
   this.done = done || function() {};
 };
@@ -34,23 +36,23 @@ BrsOData.prototype.ODATA3SCHEMA = {
   total: function(data) { return data["odata.count"]; }
 };
 
-BrsOData.prototype.getDataSource = function(entryUrl, data, fields, sort) {
-
+BrsOData.prototype.getDataSource = function(baseUrl, entryUrl, data, fields, sort) {
   return new kendo.data.DataSource({
     type: "odata",
     transport: {
                  read: {
-                   url: this.url + "/" + entryUrl + "/",
+                   url: baseUrl + "/" + entryUrl + "/",
                    dataType: "jsonp",
                    data: $.extend({$inlinecount: "allpages"}, data)
                  }
                },
     sort: sort,
     serverPaging: true,
-      serverSorting: true,
+    serverSorting: true,
     schema: {
-      data: function(data) { return data.value; },
-      total: function(data) { return data["odata.count"]; },
+      data: function(data) { 
+        return data.value? data.value: data.d.results; },
+      total: function(data) { return data["odata.count"]?data["odata.count"]:data.d["__count"]; },
       serverPaging: true,
       model: {fields: fields}
     }
@@ -60,8 +62,13 @@ BrsOData.prototype.getDataSource = function(entryUrl, data, fields, sort) {
 
 
 BrsOData.prototype.listTypesDataSource = function() {
-  return this.getDataSource("ValueTypes", undefined,
+  return this.getDataSource(this.url, "ValueTypes", undefined,
                             {id: "ListPropertyTypeId", value: "Name"});
+};
+
+BrsOData.prototype.countriesDataSource = function() {
+  return this.getDataSource(this.urlProfiles, "countryNames", undefined,
+                            {id: "IsoCode2d", value: "NameEn"}, {field: "NameEn"});
 };
 
 
@@ -111,7 +118,7 @@ BrsOData.prototype.listsDataSources = function() {
             ds.view(),
             // ----------------------------------------------------------------------
             function(view) {
-              var ds = self.getDataSource(
+              var ds = self.getDataSource(self.url,
                   "Values",
                   {
                     $filter: "Types/any(x: x/ListPropertyTypeId eq guid'" +
@@ -172,6 +179,9 @@ BrsOData.prototype.documentsDataSource = function(filters) {
           case 'year':
             andFilter.push('(' + this._odataOr('year(PublicationDate)', values) + ')');
             break;
+          case 'country':
+            andFilter.push('(' + this._odataOr('Country', values) + ')');
+            break;
           default:
             var expand = this.listTypeToField(type)
             andFilter.push('(' + this._odataExpandOr(expand, 'ListPropertyId', values) + ')');
@@ -181,5 +191,5 @@ BrsOData.prototype.documentsDataSource = function(filters) {
     }
   }
   filter = andFilter.join(' and ');
-  return this.getDataSource("Documents", {"$expand": "Titles,Descriptions,Files", "$filter": filter});
+  return this.getDataSource(this.url, "Documents", {"$expand": "Titles,Descriptions,Files", "$filter": filter});
 };

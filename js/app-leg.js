@@ -29,9 +29,8 @@ $(document).ready(function() {
        title: "Language"
     },
     {
-       type: "term",
-       title: "Terms",
-       list: true
+       type: "country",
+       title: "Country"
     }
 
  ];

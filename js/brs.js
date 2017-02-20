@@ -1,5 +1,7 @@
-var BrsOData = function(url, done, fail) {
+var BrsOData = function(url, urlProfiles, done, fail) {
   this.url = url;
+  this.urlProfiles = urlProfiles;
+
   this.fail = fail || function() {};
   this.done = done || function() {};
 };
@@ -34,23 +36,23 @@ BrsOData.prototype.ODATA3SCHEMA = {
   total: function(data) { return data["odata.count"]; }
 };
 
-BrsOData.prototype.getDataSource = function(entryUrl, data, fields, sort) {
-
+BrsOData.prototype.getDataSource = function(baseUrl, entryUrl, data, fields, sort) {
   return new kendo.data.DataSource({
     type: "odata",
     transport: {
                  read: {
-                   url: this.url + "/" + entryUrl + "/",
+                   url: baseUrl + "/" + entryUrl + "/",
                    dataType: "jsonp",
                    data: $.extend({$inlinecount: "allpages"}, data)
                  }
                },
     sort: sort,
     serverPaging: true,
-      serverSorting: true,
+    serverSorting: true,
     schema: {
-      data: function(data) { return data.value; },
-      total: function(data) { return data["odata.count"]; },
+      data: function(data) { 
+        return data.value? data.value: data.d.results; },
+      total: function(data) { return data["odata.count"]?data["odata.count"]:data.d["__count"]; },
       serverPaging: true,
       model: {fields: fields}
     }
@@ -60,8 +62,13 @@ BrsOData.prototype.getDataSource = function(entryUrl, data, fields, sort) {
 
 
 BrsOData.prototype.listTypesDataSource = function() {
-  return this.getDataSource("ValueTypes", undefined,
+  return this.getDataSource(this.url, "ValueTypes", undefined,
                             {id: "ListPropertyTypeId", value: "Name"});
+};
+
+BrsOData.prototype.countriesDataSource = function() {
+  return this.getDataSource(this.urlProfiles, "countryNames", undefined,
+                            {id: "IsoCode2d", value: "NameEn"}, {field: "NameEn"});
 };
 
 
@@ -111,7 +118,7 @@ BrsOData.prototype.listsDataSources = function() {
             ds.view(),
             // ----------------------------------------------------------------------
             function(view) {
-              var ds = self.getDataSource(
+              var ds = self.getDataSource(self.url,
                   "Values",
                   {
                     $filter: "Types/any(x: x/ListPropertyTypeId eq guid'" +
@@ -172,6 +179,9 @@ BrsOData.prototype.documentsDataSource = function(filters) {
           case 'year':
             andFilter.push('(' + this._odataOr('year(PublicationDate)', values) + ')');
             break;
+          case 'country':
+            andFilter.push('(' + this._odataOr('Country', values) + ')');
+            break;
           default:
             var expand = this.listTypeToField(type)
             andFilter.push('(' + this._odataExpandOr(expand, 'ListPropertyId', values) + ')');
@@ -181,7 +191,7 @@ BrsOData.prototype.documentsDataSource = function(filters) {
     }
   }
   filter = andFilter.join(' and ');
-  return this.getDataSource("Documents", {"$expand": "Titles,Descriptions,Files", "$filter": filter});
+  return this.getDataSource(this.url, "Documents", {"$expand": "Titles,Descriptions,Files", "$filter": filter});
 };
 
 
@@ -201,7 +211,8 @@ $.fn.brsODataUI = function(options) {
     meetingtype: [],
     chemical: [],
     meeting: [],
-    type: []
+    type: [],
+    country: []
   };
 
   filters = jQuery.extend(filters, predefined);
@@ -211,6 +222,7 @@ $.fn.brsODataUI = function(options) {
   _processDocuments(service.documentsDataSource(filters));
   _processLanguages(service.languagesDataSource());
   _processYears(service.yearsDataSource(2005));
+  _processCountries(service.countriesDataSource());
   // --------------------------------------------------------------------------
   // function _dataSourceRequest(startOrEnd){
   //   $("div[data-brs-filters-loading]").each(function(index, loadingEl){
@@ -221,8 +233,8 @@ $.fn.brsODataUI = function(options) {
   // --------------------------------------------------------------------------
   function _onFiltersChange(e) {
     var type = $(e.sender.element).data("brs-filter");
+    
     filters[type] = this.value();
-
     var ds = service.documentsDataSource(filters);
     _processDocuments(ds);
   }
@@ -261,6 +273,13 @@ $.fn.brsODataUI = function(options) {
     $("select[data-brs-filter='year']", self.parentEl).each(function(index, el) {
       $(el).kendoMultiSelect(
           {dataSource: ds, dataTextField: "value", dataValueField: "value", change: _onFiltersChange});
+    });
+  }
+
+  function _processCountries(ds) {
+    $("select[data-brs-filter='country']", self.parentEl).each(function(index, el) {
+      $(el).kendoMultiSelect(
+          {dataSource: ds, dataTextField: "value", dataValueField: "id", change: _onFiltersChange});
     });
   }
 
@@ -313,7 +332,8 @@ $.fn.brsODataUI = function(options) {
 $.fn.brsODataUIBuilder = function(filters) {
     var result = '<div id="brs-filters">';
     
-    var odata = new BrsOData('http://informea.pops.int/BrsDocuments/MFiles.svc/');
+    var odata = new BrsOData('http://informea.pops.int/BrsDocuments/MFiles.svc/',
+        'http://informea.pops.int/CountryProfiles/bcTreatyProfile.svc');
 
     
     var filterTmpl = kendo.template(
@@ -325,7 +345,8 @@ $.fn.brsODataUIBuilder = function(filters) {
     var predefined = {};
     for(var f in filters) {
         var filter = filters[f];
-        var show = filter.show === undefined || filter.show == true; 
+        var show = filter.show === undefined || filter.show == true;
+        console.log(filter,show); 
         if (show) {
             result += filterTmpl($.extend({list: false}, filter));
         }
@@ -340,7 +361,7 @@ $.fn.brsODataUIBuilder = function(filters) {
         "                        <tr>" +
         "                            <!--<th>UNnumber</th>-->" +
         "                            <th>Treaty</th>" +
-        "                            <th>Party</th>" +
+        "                            <th>Country</th>" +
         "                            <th>Publication Date</th>" +
         "                            <th>&nbsp;</th>" +
         "                        </tr>" +
@@ -381,11 +402,16 @@ $.fn.brsODataUIBuilder = function(filters) {
         "                                        <div class=\"brs-tab-content brs-tab-description\">#= Descriptions[j].Value #</div>" +
         "                                        <div class=\"brs-tab-content brs-tab-files\">" +
         "                                            # for (var l = 0; l < Files.length; l++) { # " +
-        "                                                    # if (Files[l].Language == Titles[j].Language) {#" +
+        "                                                    #   if (Files[l].Size == 0 ) {#" +
+        "                                                     #      if (Files[l].Extension == 'txt') {#" +
+        "                                                            <div class=\"brs-tab-content brs-tab-notyet\">Not yet implemented</div>"+
+        "                                                     #      }#" +
+        "                                                    #   } else {#" +    
+        "                                                     #   if (Files[l].Language == Titles[j].Language) {#" +
         "                                                        <span class=\"brs-tab-files-link\">" +
         "                                                            <a href=\"#:Files[l].Url#\">#:Files[l].Extension#</a>" +
         "                                                        </span>" +
-        "                                                    #}#" +
+        "                                                    #}}#" +
         "                                            " +
         "                                            # } #" +
         "                                        </div>" +

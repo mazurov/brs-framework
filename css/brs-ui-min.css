@@ -55,6 +55,12 @@
   color: grey;
 }
 
+.brs-tab-notyet{
+  font-weight: bold;
+  font-size: x-small;
+  color: grey;
+}
+
 .brs-tab-description{
   padding-top: 20px;
 }

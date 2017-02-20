@@ -3,6 +3,7 @@ $(document).ready(function() {
 
   var fail = function() { console.error("SASHA", arguments); };
   var odata = new BrsOData('http://informea.pops.int/BrsDocuments/MFiles.svc/',
+  'http://informea.pops.int/CountryProfiles/bcTreatyProfile.svc',
                            done, fail);
   $("body").brsODataUI(
     {

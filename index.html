@@ -33,6 +33,10 @@
                 <select data-brs-filter="year"></select>
             </div>
             <div class="brs-filter brs-terms-container">
+                Country
+                <select data-brs-filter="country"></select>
+            </div>
+            <div class="brs-filter brs-terms-container">
                 Terms
                 <select data-brs-filter="term" data-brs-list></select>
             </div>
@@ -70,7 +74,7 @@
                         <tr>
                             <!--<th>UNnumber</th>-->
                             <th>Convention</th>
-                            <th>Party</th>
+                            <th>Country</th>
                             <th>Publication Date</th>
                             <th>&nbsp;</th>
                         </tr>
@@ -86,7 +90,6 @@
     </form>
 
     <script id='brs-template' type='text/x-kendo-tmpl'>
-
         <tr>
             <td>#= Convention#</td>
             <td>#= CountryFull != null? CountryFull: "" #</td>

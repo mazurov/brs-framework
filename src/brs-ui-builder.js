@@ -9,7 +9,8 @@
 $.fn.brsODataUIBuilder = function(filters) {
     var result = '<div id="brs-filters">';
     
-    var odata = new BrsOData('http://informea.pops.int/BrsDocuments/MFiles.svc/');
+    var odata = new BrsOData('http://informea.pops.int/BrsDocuments/MFiles.svc/',
+        'http://informea.pops.int/CountryProfiles/bcTreatyProfile.svc');
 
     
     var filterTmpl = kendo.template(
@@ -21,7 +22,8 @@ $.fn.brsODataUIBuilder = function(filters) {
     var predefined = {};
     for(var f in filters) {
         var filter = filters[f];
-        var show = filter.show === undefined || filter.show == true; 
+        var show = filter.show === undefined || filter.show == true;
+        console.log(filter,show); 
         if (show) {
             result += filterTmpl($.extend({list: false}, filter));
         }
@@ -36,7 +38,7 @@ $.fn.brsODataUIBuilder = function(filters) {
         "                        <tr>" +
         "                            <!--<th>UNnumber</th>-->" +
         "                            <th>Treaty</th>" +
-        "                            <th>Party</th>" +
+        "                            <th>Country</th>" +
         "                            <th>Publication Date</th>" +
         "                            <th>&nbsp;</th>" +
         "                        </tr>" +
@@ -77,11 +79,16 @@ $.fn.brsODataUIBuilder = function(filters) {
         "                                        <div class=\"brs-tab-content brs-tab-description\">#= Descriptions[j].Value #</div>" +
         "                                        <div class=\"brs-tab-content brs-tab-files\">" +
         "                                            # for (var l = 0; l < Files.length; l++) { # " +
-        "                                                    # if (Files[l].Language == Titles[j].Language) {#" +
+        "                                                    #   if (Files[l].Size == 0 ) {#" +
+        "                                                     #      if (Files[l].Extension == 'txt') {#" +
+        "                                                            <div class=\"brs-tab-content brs-tab-notyet\">Not yet implemented</div>"+
+        "                                                     #      }#" +
+        "                                                    #   } else {#" +    
+        "                                                     #   if (Files[l].Language == Titles[j].Language) {#" +
         "                                                        <span class=\"brs-tab-files-link\">" +
         "                                                            <a href=\"#:Files[l].Url#\">#:Files[l].Extension#</a>" +
         "                                                        </span>" +
-        "                                                    #}#" +
+        "                                                    #}}#" +
         "                                            " +
         "                                            # } #" +
         "                                        </div>" +
