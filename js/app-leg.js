@@ -3,19 +3,22 @@ $(document).ready(function() {
     {
       type: "convention",
       title: "Treaty",
-      selected: ["basel"]
+      selected: ["basel"],
+      show: false
     },
     {
        type: "type",
        title: "Document type",
        selected: ["f8a0453d-86e5-e311-86cc-0050569d5de3"],
-       list: true
+       list: true,
+       show: false
     },
     {
        type: "programme",
        title: "Programme",
        selected: ["277ffdca-7b64-4516-a888-cc4027b19a40"],
-       list: true
+       list: true,
+       show: false
     },
     {
        type: "year",
