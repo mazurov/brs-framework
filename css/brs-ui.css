@@ -1,47 +1,6 @@
-#brs-filters {
-  background-color: #e3e3e3;
-  padding: 20px;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
-}
 
-#brs-list {
- margin-top: 10px;
- border-style: none;
- width: 100%;
- -webkit-border-radius: 10px;
- -moz-border-radius: 10px;
- border-radius: 10px;
-}
-
-#brs-list tr {
-  vertical-align: top;
-}
-
-#brs-list .brs-row-image {
-  width: 150px;
-}
-
-#brs-list hr {
-  display: block;
-  height: 0px;
-  border: 0;
-  border-top: 1px solid #e3e3e3;
-}
-
-#brs-pager {
-  margin-top: 5px;
-}
-
-#brs-repositories-table {
-  width: 100%;
-  text-align: center;
-}
-
-#brs-repositories {
-  background-color: #e3e3e3;
-  border-style:none;
+.brs-documents-pager .k-icon {
+  margin-top: 3px;
 }
 
 .brs-tab-title{
