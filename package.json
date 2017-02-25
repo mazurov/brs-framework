@@ -1,0 +1,26 @@
+{
+  "name": "brs-odata",
+  "version": "1.0.0",
+  "description": "JavaScript library for accessing and displaying information from the [BRS M-Files service](http://informea.pops.int/BrsDocuments/MFiles.svc).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mazurov/brs-framework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mazurov/brs-framework/issues"
+  },
+  "homepage": "https://github.com/mazurov/brs-framework#readme",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "webpack": "^2.2.1"
+  }
+}

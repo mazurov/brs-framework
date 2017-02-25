@@ -36,25 +36,29 @@ BrsOData.prototype.ODATA3SCHEMA = {
   total: function(data) { return data["odata.count"]; }
 };
 
-BrsOData.prototype.getDataSource = function(baseUrl, entryUrl, data, fields, sort) {
+
+
+BrsOData.prototype.getDataSource = function(options) {
   return new kendo.data.DataSource({
     type: "odata",
     transport: {
                  read: {
-                   url: baseUrl + "/" + entryUrl + "/",
+                   url: options.baseUrl + "/" + options.entryUrl + "/",
                    dataType: "jsonp",
-                   data: $.extend({$inlinecount: "allpages"}, data)
+                   data: $.extend({$inlinecount: "allpages"}, options.data)
                  }
                },
-    sort: sort,
+    sort: options.sort,
     serverPaging: true,
     serverSorting: true,
+    page: options.page,
+    pageSize: options.pageSize,
     schema: {
       data: function(data) { 
         return data.value? data.value: data.d.results; },
       total: function(data) { return data["odata.count"]?data["odata.count"]:data.d["__count"]; },
       serverPaging: true,
-      model: {fields: fields}
+      model: {fields: options.fields}
     }
   });
 };
@@ -62,13 +66,21 @@ BrsOData.prototype.getDataSource = function(baseUrl, entryUrl, data, fields, sor
 
 
 BrsOData.prototype.listTypesDataSource = function() {
-  return this.getDataSource(this.url, "ValueTypes", undefined,
-                            {id: "ListPropertyTypeId", value: "Name"});
+  return this.getDataSource(
+      { baseUrl: this.url,
+        entryUrl:"ValueTypes",
+        fields: {id: "ListPropertyTypeId", value: "Name"}
+      });
 };
 
 BrsOData.prototype.countriesDataSource = function() {
-  return this.getDataSource(this.urlProfiles, "countryNames", undefined,
-                            {id: "IsoCode2d", value: "NameEn"}, {field: "NameEn"});
+  return this.getDataSource(
+    { baseUrl: this.urlProfiles,
+      entryUrl: "countryNames",
+      fields: {id: "IsoCode2d", value: "NameEn"},
+      sort: {field: "NameEn"}
+    }
+  );
 };
 
 
@@ -118,14 +130,15 @@ BrsOData.prototype.listsDataSources = function() {
             ds.view(),
             // ----------------------------------------------------------------------
             function(view) {
-              var ds = self.getDataSource(self.url,
-                  "Values",
-                  {
+              var ds = self.getDataSource(
+                { baseUrl: self.url,
+                  entryUrl: "Values",
+                  data: {
                     $filter: "Types/any(x: x/ListPropertyTypeId eq guid'" +
                                  view.id + "')"
                   },
-                  {id: "ListPropertyId", value: "Value"},
-                  {field: "value", dir: "asc"});
+                  fields: {id: "ListPropertyId", value: "Value"},
+                  sort: {field: "value", dir: "asc"}});
               result.push({type: view.value, data: ds});
             });
         return result;
@@ -162,9 +175,11 @@ BrsOData.prototype.isGUID = function(value){
   var regexGuid = /^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$/gi;
   return regexGuid.test(value);
 }
-BrsOData.prototype.documentsDataSource = function(filters) {
+BrsOData.prototype.documentsDataSource = function(options) {
   var andFilter = [];
   var filter = '';
+  var filters = options.filters;
+
   if (filters){
     for(var type in filters) {
       var values = filters[type];
@@ -191,5 +206,14 @@ BrsOData.prototype.documentsDataSource = function(filters) {
     }
   }
   filter = andFilter.join(' and ');
-  return this.getDataSource(this.url, "Documents", {"$expand": "Titles,Descriptions,Files", "$filter": filter});
+
+  return this.getDataSource(
+    {
+      baseUrl: this.url, 
+      entryUrl: "Documents",
+      data: {"$expand": "Titles,Descriptions,Files", "$filter": filter},
+      page: options.page,
+      pageSize: options.pageSize,
+      sort: options.sort
+    });
 };

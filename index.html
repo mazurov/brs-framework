@@ -99,6 +99,7 @@
                     <ul>
                         #   var found = false;
                             for (var j = 0; j < Titles.length; j++) { #
+                            # found = false;#
                             # for (var i = 0; i < BrsOData.LANGUAGES.length; i++) { #
                                 # if (BrsOData.LANGUAGES[i].id == Titles[j].Language) {#
                                     <li class="brs-tab brs-tab-#: BrsOData.LANGUAGES[i].id#">  #= BrsOData.LANGUAGES[i].value #</li>
@@ -106,7 +107,7 @@
                                 #}#   
                             # } #
                             # if (!found){#
-                                <li class="brs-tab brs-tab-#: Titles[j]#">  #= Titles[j].LanguageFull #</li>
+                                <li class="brs-tab brs-tab-#: Titles[j].id#">  #= Titles[j].LanguageFull #</li>
                             # } #
                         # } #
                     </ul>

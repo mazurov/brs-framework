@@ -4,6 +4,8 @@ $.fn.brsODataUI = function(options) {
   var predefined = options.predefined || {};
   var template = options.template; 
 
+
+
   var filters = {
     convention: [],
     language: [],
@@ -20,12 +22,20 @@ $.fn.brsODataUI = function(options) {
 
   filters = jQuery.extend(filters, predefined);
 
+  var docRequestOptions = {
+    filters: filters,
+    page: 1,
+    pageSize: options.pageSize || 10,
+    sort: { field: "PublicationDate", dir: "desc"}
+  };
+
   service.listsDataSources().then(_processLists);
   _processConventions(service.conventionsDataSource());
-  _processDocuments(service.documentsDataSource(filters));
   _processLanguages(service.languagesDataSource());
   _processYears(service.yearsDataSource(2005));
   _processCountries(service.countriesDataSource());
+
+  _processDocuments(service.documentsDataSource(docRequestOptions));
   // --------------------------------------------------------------------------
   // function _dataSourceRequest(startOrEnd){
   //   $("div[data-brs-filters-loading]").each(function(index, loadingEl){
@@ -38,7 +48,7 @@ $.fn.brsODataUI = function(options) {
     var type = $(e.sender.element).data("brs-filter");
     
     filters[type] = this.value();
-    var ds = service.documentsDataSource(filters);
+    var ds = service.documentsDataSource(docRequestOptions);
     _processDocuments(ds);
   }
 
@@ -87,9 +97,6 @@ $.fn.brsODataUI = function(options) {
   }
 
   function _processDocuments(ds) {
-    ds.pageSize(20);
-    ds.sort({ field: "PublicationDate", dir: "desc"});
-
     $("tbody[data-brs-documents]", self.parentEl).each(function(index, el) {
       var tmpl = template || kendo.template($("#brs-template").html());
       var pager = $(".brs-documents-pager");
@@ -97,6 +104,7 @@ $.fn.brsODataUI = function(options) {
       $(el).kendoListView({
         dataSource: ds,
         template: tmpl,
+        autoBind: true,
         dataBound: function() { 
           $(".brs-tabstrip", self).each(
             function() {
@@ -116,7 +124,7 @@ $.fn.brsODataUI = function(options) {
         },
       });
       pager.kendoPager({
-         dataSource: ds
+         dataSource: ds,
       });
     });
   }
