@@ -126,7 +126,7 @@ $(document).ready(function() {
 
 
 //$("#brs-builder-leg").brsODataUIBuilder(filters_leg);
-$("#brs-builder-nip").brsODataUIBuilder(filters_all);
+$("#brs-builder").brsODataUIBuilder(filters_all);
 
 
 });
