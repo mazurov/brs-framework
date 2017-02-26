@@ -41,16 +41,6 @@
 		"oAP": "\/CNAME",
 		"oF": 0
 		},
-	"\/css\/brs-ui-min.css": {
-		"aP": 0,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 2,
-		"oAP": "\/css\/brs-ui-min-min.css",
-		"oF": 0,
-		"oS": 0
-		},
 	"\/css\/brs-ui.css": {
 		"aP": 0,
 		"bl": 0,
@@ -137,6 +127,15 @@
 		"pME": 1,
 		"rFN": 0,
 		"uCM": 0
+		},
+	"\/src\/brs-languages.js": {
+		"ft": 64,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "\/src\/brs-languages-min.js",
+		"oF": 1,
+		"sC": 0,
+		"tS": 0
 		},
 	"\/src\/brs-odata.js": {
 		"ft": 64,

@@ -8,17 +8,10 @@ var BrsOData = function(url, urlProfiles, done, fail) {
 
 BrsOData.CONVENTIONS = [{name: "basel"}, {name: "rotterdam"}, {name: "stockholm"}];
 
-BrsOData.LANGUAGES = [
-  {id: "en", name: "English", value: "English"},
-  {id: "fr", name: "French", value: "Français"},
-  {id: "es", name: "Spanish", value: "Español"},
-  {id: "ru", name: "Russian", value: "Русский"},
-  {id: "ar", name: "Arabic", value: "العربية"},
-  {id: "zh", name: "Chinese", value: "中国的"},
-  {id: "pt", name: "Portuguese", value: "Portuguese"}
-  
-];
-
+BrsOData.LANGUAGES = window.languages.getAllLanguageCode().map(function(langcode){
+  var info = window.languages.getLanguageInfo(langcode);
+  return {id: langcode, name: info.name, value: info.nativeName}
+});
 
 BrsOData.LISTTYPETOFIELD = {
     term: 'Terms',
@@ -66,6 +59,7 @@ BrsOData.prototype.getDataSource = function(options) {
 
 
 BrsOData.prototype.listTypesDataSource = function() {
+  debugger;
   return this.getDataSource(
       { baseUrl: this.url,
         entryUrl:"ValueTypes",

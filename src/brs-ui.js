@@ -78,7 +78,7 @@ $.fn.brsODataUI = function(options) {
     $("select[data-brs-filter='language']", self.parentEl).each(function(index, el) {
 
       $(el).kendoMultiSelect(
-          {dataSource: ds, dataTextField: "value", dataValueField: "id", change: _onFiltersChange});
+          {dataSource: ds, dataTextField: "name", dataValueField: "id", change: _onFiltersChange});
     });
   }
 
