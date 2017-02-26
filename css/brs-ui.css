@@ -3,6 +3,10 @@
   margin-top: 3px;
 }
 
+.k-pager-numbers span {
+    line-height: 2em;
+}
+
 .brs-documents table {
   width: 100%;
 }
