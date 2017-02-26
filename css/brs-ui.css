@@ -3,6 +3,10 @@
   margin-top: 3px;
 }
 
+.brs-documents table {
+  width: 100%;
+}
+
 .brs-tab-title{
   font-weight: bold;
   font-size: normal;

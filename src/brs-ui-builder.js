@@ -31,7 +31,7 @@ $.fn.brsODataUIBuilder = function(filters) {
     result += "</div>";
 
     result += `<div>
-                <div class="brs-filter brs-terms-container">
+                <div class="brs-documents">
                     <table>
                         <thead>
                             <tr>
