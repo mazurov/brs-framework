@@ -7,6 +7,10 @@
   width: 100%;
 }
 
+.brs-documents td {
+  vertical-align: top;
+}
+
 .brs-tab-title{
   font-weight: bold;
   font-size: normal;
