@@ -4,8 +4,6 @@ $.fn.brsODataUI = function(options) {
   var predefined = options.predefined || {};
   var template = options.template; 
 
-
-
   var filters = {
     convention: [],
     language: [],
@@ -17,7 +15,8 @@ $.fn.brsODataUI = function(options) {
     chemical: [],
     meeting: [],
     type: [],
-    country: []
+    country: [],
+    showEmptyCountry: true
   };
 
   filters = jQuery.extend(filters, predefined);

@@ -140,14 +140,16 @@ BrsOData.prototype.listsDataSources = function() {
       });
   // ------------------------------------------------------------------------
 };
-BrsOData.prototype._odataOr = function(field, values) {
+BrsOData.prototype._odataOr = function(field, values, op) {
   var exp = [];
   var quote = "'";
+  op = op || 'eq';
+
   for(var i in values){
-    if(typeof values[i] == 'number'){
+    if(values[i] === 'null' || typeof values[i] == 'number'){
 	    quote = "";
     }
-    exp.push(field + " eq " + quote + values[i] + quote);
+    exp.push(field + " " + op + " " + quote + values[i] + quote);
   }
   return exp.join(' or ');
 }
@@ -177,7 +179,8 @@ BrsOData.prototype.documentsDataSource = function(options) {
   if (filters){
     for(var type in filters) {
       var values = filters[type];
-      if (values.length > 0) {
+      // TODO: refactor check
+      if (typeof values === 'boolean' || values.length > 0) {
         switch (type) {
           case 'convention':
             andFilter.push('(' + this._odataOr('Convention', values) + ')');
@@ -190,6 +193,11 @@ BrsOData.prototype.documentsDataSource = function(options) {
             break;
           case 'country':
             andFilter.push('(' + this._odataOr('Country', values) + ')');
+            break;
+          case 'showEmptyCountry':
+            if (values) {
+              andFilter.push('(' + this._odataOr('Country', ['null'], 'ne') + ')');
+            }
             break;
           default:
             var expand = this.listTypeToField(type)

@@ -32,6 +32,11 @@ $(document).ready(function() {
     {
        type: "country",
        title: "Country"
+    },
+    {
+       type: "empty-country",
+       title: "Country",
+       show: false
     }
  ];
 

@@ -7,8 +7,14 @@
 		"uuidString": "1D30EED7-AAD4-461C-817D-965339444DEB"
 		}
 	],
-"creatorBuild": "25568",
+"creatorBuild": "25704",
 "files": {
+	"\/.gitignore": {
+		"ft": 8192,
+		"oA": 2,
+		"oAP": "\/.gitignore",
+		"oF": 0
+		},
 	"\/.jshintrc": {
 		"ft": 8192,
 		"oA": 2,
@@ -102,6 +108,21 @@
 		"sC": 1,
 		"tS": 0
 		},
+	"\/karma.conf.js": {
+		"ft": 64,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/karma.conf-min.js",
+		"oF": 0,
+		"sC": 1,
+		"tS": 0
+		},
+	"\/node_modules": {
+		"ft": 65536,
+		"oA": 2,
+		"oAP": "\/build\/node_modules",
+		"oF": 0
+		},
 	"\/package.json": {
 		"ft": 524288,
 		"oA": 1,
@@ -172,6 +193,21 @@
 		"oF": 3,
 		"sC": 0,
 		"tS": 1
+		},
+	"\/test\/.jshintrc": {
+		"ft": 8192,
+		"oA": 2,
+		"oAP": "\/test\/.jshintrc",
+		"oF": 0
+		},
+	"\/test\/jasmine.js": {
+		"ft": 64,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/test\/jasmine-min.js",
+		"oF": 0,
+		"sC": 1,
+		"tS": 0
 		}
 	},
 "hooks": [
@@ -854,6 +890,10 @@
 			"active": 1,
 			"optionString": ""
 			},
+		"no-compare-neg-zero": {
+			"active": 0,
+			"optionString": ""
+			},
 		"no-cond-assign": {
 			"active": 1,
 			"optionString": "'except-parens'"
@@ -1333,6 +1373,10 @@
 		"no-with": {
 			"active": 0,
 			"optionString": ""
+			},
+		"nonblock-statement-body-position": {
+			"active": 0,
+			"optionString": "'beside'"
 			},
 		"object-curly-newline": {
 			"active": 0,
@@ -1933,7 +1977,8 @@
 		"autoOutputPathRelativePath": "",
 		"autoOutputPathReplace1": "",
 		"autoOutputPathReplace2": "",
-		"autoOutputPathStyle": 0
+		"autoOutputPathStyle": 0,
+		"quality": 100
 		},
 	"languageDefaultsJS": {
 		"autoOutputAction": 0,
@@ -2026,7 +2071,9 @@
 		"autoOutputPathRelativePath": "",
 		"autoOutputPathReplace1": "",
 		"autoOutputPathReplace2": "",
-		"autoOutputPathStyle": 0
+		"autoOutputPathStyle": 0,
+		"enableLossy": 1,
+		"quality": 100
 		},
 	"languageDefaultsPUG": {
 		"autoOutputAction": 0,
