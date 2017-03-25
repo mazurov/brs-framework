@@ -184,7 +184,6 @@ BrsOData.prototype.isGUID = function(value){
   return regexGuid.test(value);
 }
 BrsOData.prototype.documentsDataSource = function(options) {
-  console.log("IN");
   var andFilter = [];
   var filter = '';
   var filters = options.filters;
@@ -260,7 +259,6 @@ BrsOData.prototype.documentsDataSource = function(options) {
             );
           row.Languages = languages;
         }
-        console.log(data);        
         return data;
       }
     });
