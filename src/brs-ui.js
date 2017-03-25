@@ -77,7 +77,12 @@ $.fn.brsODataUI = function(options) {
     $("select[data-brs-filter='language']", self.parentEl).each(function(index, el) {
 
       $(el).kendoMultiSelect(
-          {dataSource: ds, dataTextField: "name", dataValueField: "id", change: _onFiltersChange});
+          {
+            dataSource: ds,
+            dataTextField: "name",
+            dataValueField: "id",
+            group: {field: "inun"},
+            change: _onFiltersChange});
     });
   }
 
@@ -99,6 +104,10 @@ $.fn.brsODataUI = function(options) {
     $("tbody[data-brs-documents]", self.parentEl).each(function(index, el) {
       var tmpl = template || kendo.template($("#brs-template").html());
       var pager = $(".brs-documents-pager");
+
+      // Destroy all previous event handlers
+      kendo.destroy($(el));
+      kendo.destroy($(pager));
 
       $(el).kendoListView({
         dataSource: ds,

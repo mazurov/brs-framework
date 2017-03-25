@@ -57,47 +57,30 @@ $.fn.brsODataUIBuilder = function(filters) {
             <td>
                     <div class="brs-tabstrip">
                     <ul>
-                            #  var found;# 
-                            #  for (var j = 0; j < Titles.length; j++) { #
-                            #      found = false; # 
-                            #      for (var i = 0; i < BrsOData.LANGUAGES.length; i++) { #
-                            #        if (BrsOData.LANGUAGES[i].id == Titles[j].Language) { #
-                                        <li class="brs-tab brs-tab-#: BrsOData.LANGUAGES[i].id#">  #= BrsOData.LANGUAGES[i].value #</li>
-                            #          found=true; break; # 
-                            #        } #   
-                            #      } #
-                            #      if (!found){#
-                                        <li class="brs-tab brs-tab-#: Titles[j].Language#">  #= Titles[j].LanguageFull #</li>
-                            #      } #
+                            #  for (var j = 0; j < Languages.length; j++) { #
+                                <li class="brs-tab brs-tab-#: Languages[j].Language#">  #= Languages[j].LanguageNative #</li>
                             #  } #
                     </ul>
-                    # for (var j = 0; j < Titles.length; j++) { #
-                            # for (var i = 0; i < BrsOData.LANGUAGES.length; i++) { #
-                                # found = false; #
-                                # if (BrsOData.LANGUAGES[i].id == Titles[j].Language) {#
-                                    <div>
-                                        <div class="brs-tab-content brs-tab-title">#= Titles[j].Value #</div>
-                                        <!--<div class="brs-tab-content brs-tab-unnumber">#: UnNumber #</div>-->
-                                        <div class="brs-tab-content brs-tab-description">#= Descriptions[j].Value #</div>
-                                        <div class="brs-tab-content brs-tab-files">
-                                            # for (var l = 0; l < Files.length; l++) { # 
-                                                    #   if (Files[l].Size == 0 ) {#
-                                                        #      if (Files[l].Extension == 'txt') {#
-                                                            <div class="brs-tab-content brs-tab-notyet">Not yet implemented</div>
-                                                        #      }#
-                                                    #   } else {#    
-                                                        #   if (Files[l].Language == Titles[j].Language) {#
-                                                        <span class="brs-tab-files-link">
-                                                            <a href="#:Files[l].Url#">#:Files[l].Extension#</a>
-                                                        </span>
-                                                    #}}#
-                                            
-                                            # } #
-                                        </div>
-                                    </div>
-                                    # found = true; break; #
-                                # } #   
-                            # } #
+                    # for (var j = 0; j < Languages.length; j++) { #
+                        <div>
+                            <div class="brs-tab-content brs-tab-title">#= Languages[j].Title #</div>
+                            <!--<div class="brs-tab-content brs-tab-unnumber">#: UnNumber #</div>-->
+                            <div class="brs-tab-content brs-tab-description">#= Languages[j].Description #</div>
+                            <div class="brs-tab-content brs-tab-files">
+                                # for (var l = 0; l < Languages[j].Files.length; l++) { # 
+                                        #   if (Languages[j].Files[l].Size == 0 ) {#
+                                            # if (Languages[j].Files[l].Extension == 'txt') {#
+                                                <div class="brs-tab-content brs-tab-notyet">Not yet implemented</div>
+                                            #}#
+                                        #   } else {#    
+                                            <span class="brs-tab-files-link">
+                                                <a href="#:Languages[j].Files[l].Url#">#:Languages[j].Files[l].Extension#</a>
+                                            </span>
+                                        #}#
+                                
+                                # } #
+                            </div>
+                        </div>
                     # } #
                 </div>
             </td>

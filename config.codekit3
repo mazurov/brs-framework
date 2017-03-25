@@ -57,6 +57,15 @@
 		"oF": 1,
 		"oS": 0
 		},
+	"\/gulpfile.js": {
+		"ft": 64,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/gulpfile-min.js",
+		"oF": 0,
+		"sC": 1,
+		"tS": 0
+		},
 	"\/index.html": {
 		"ft": 8192,
 		"oA": 2,

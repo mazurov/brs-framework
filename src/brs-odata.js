@@ -10,7 +10,14 @@ BrsOData.CONVENTIONS = [{name: "basel"}, {name: "rotterdam"}, {name: "stockholm"
 
 BrsOData.LANGUAGES = window.languages.getAllLanguageCode().map(function(langcode){
   var info = window.languages.getLanguageInfo(langcode);
-  return {id: langcode, name: info.name, value: info.nativeName}
+  return {
+      id: langcode,
+      name: info.name,
+      value: info.nativeName,
+      inbrs: info.inbrs,
+      inun: info.inun,
+      group: info.inun?"UN languages":"Other"
+  };
 });
 
 BrsOData.LISTTYPETOFIELD = {
@@ -48,7 +55,9 @@ BrsOData.prototype.getDataSource = function(options) {
     pageSize: options.pageSize,
     schema: {
       data: function(data) { 
-        return data.value? data.value: data.d.results; },
+        var handler = options.handler || function(data) { return data; };
+        return handler(data.value? data.value: data.d.results); 
+      },
       total: function(data) { return data["odata.count"]?data["odata.count"]:data.d["__count"]; },
       serverPaging: true,
       model: {fields: options.fields}
@@ -59,7 +68,6 @@ BrsOData.prototype.getDataSource = function(options) {
 
 
 BrsOData.prototype.listTypesDataSource = function() {
-  debugger;
   return this.getDataSource(
       { baseUrl: this.url,
         entryUrl:"ValueTypes",
@@ -88,9 +96,13 @@ BrsOData.prototype.conventionsDataSource = function() {
 };
 
 BrsOData.prototype.languagesDataSource = function() {
+  var langs = $.merge([], _.filter(BrsOData.LANGUAGES, function(lang){
+    return lang.inbrs;}));
+  // langs.sort(window.languages.sort);
   return new kendo.data.DataSource({
     type: "json",
-    data: $.merge([], BrsOData.LANGUAGES)
+    data: langs,
+    group: {field: "group", dir: "desc"}
   });
 };
 
@@ -163,7 +175,7 @@ BrsOData.prototype._odataExpandOr = function(expand, field, values) {
      } 
      exp.push(expand + "/any(x: x/" + field + " eq " + strValue + ")");
   }
-  return exp.join(' or ');
+  return exp.join(' and ');
 }
 
 
@@ -172,6 +184,7 @@ BrsOData.prototype.isGUID = function(value){
   return regexGuid.test(value);
 }
 BrsOData.prototype.documentsDataSource = function(options) {
+  console.log("IN");
   var andFilter = [];
   var filter = '';
   var filters = options.filters;
@@ -216,6 +229,39 @@ BrsOData.prototype.documentsDataSource = function(options) {
       data: {"$expand": "Titles,Descriptions,Files", "$filter": filter},
       page: options.page,
       pageSize: options.pageSize,
-      sort: options.sort
+      sort: options.sort,
+      handler: (data) => { // Group Titles, Descriptions, and Files by Language
+        for (var row of data) {
+          let languages = [];
+          for (var title of row.Titles){
+            let record  = {};
+            let languageInfo = window.languages.getLanguageInfo(title.Language);
+            record.Language = title.Language;
+            record.LanguageFull = title.LanguageFull;
+            record.LanguageNative = languageInfo !== null? languageInfo.nativeName: record.LanguageFull;
+            record.LanguageIsUN = languageInfo !== null? languageInfo.inun: false;
+            record.Title = title.Value;
+            record.Description =  row.Descriptions.filter((item) => item.Language == record.Language)[0].Value;
+            record.Files = row.Files.filter((item) => item.Language == record.Language);
+            languages.push(record);
+          }
+          languages.sort((a,b) => 
+              { 
+                if (!a.LanguageIsUN && !b.LanguageIsUN){
+                  return a.LanguageFull.localeCompare(b.LanguageFull);
+                }
+
+                if (a.LanguageIsUN && !b.LanguageIsUN) return -1;
+                if (!a.LanguageIsUN && b.LanguageIsUN) return 1;
+                
+                return a.LanguageFull.localeCompare(b.LanguageFull);
+
+              }
+            );
+          row.Languages = languages;
+        }
+        console.log(data);        
+        return data;
+      }
     });
 };
