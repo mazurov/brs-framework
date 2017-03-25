@@ -175,7 +175,7 @@ BrsOData.prototype._odataExpandOr = function(expand, field, values) {
      } 
      exp.push(expand + "/any(x: x/" + field + " eq " + strValue + ")");
   }
-  return exp.join(' and ');
+  return exp.join(' or ');
 }
 
 

@@ -81,7 +81,6 @@ $.fn.brsODataUI = function(options) {
             dataSource: ds,
             dataTextField: "name",
             dataValueField: "id",
-            group: {field: "inun"},
             change: _onFiltersChange});
     });
   }

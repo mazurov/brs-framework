@@ -16,7 +16,7 @@ gulp.task('scripts', function(){
         browserSync.notify(err.message, 5000);
         this.emit('end');
     }))
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('js'))
 });
