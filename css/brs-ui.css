@@ -33,7 +33,11 @@
 }
 
 .brs-tab-description{
-  padding-top: 20px;
+  margin-top: 10px;
+}
+
+.brs-tab-files{
+  margin-top: 10px;
 }
 
 .brs-filter {

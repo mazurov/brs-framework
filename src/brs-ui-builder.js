@@ -65,7 +65,16 @@ $.fn.brsODataUIBuilder = function(filters) {
                         <div>
                             <div class="brs-tab-content brs-tab-title">#= Languages[j].Title #</div>
                             <!--<div class="brs-tab-content brs-tab-unnumber">#: UnNumber #</div>-->
-                            <div class="brs-tab-content brs-tab-description">#= Languages[j].Description #</div>
+                            
+                            # if (Languages[j].Description){ # 
+                                <ul class="brs-tab-content brs-tab-description">
+                                    <li>Description
+                                    <ul>
+                                        <li>#= Languages[j].Description #</li>
+                                    </ul>
+                                </ul>
+                            # } #
+                           
                             <div class="brs-tab-content brs-tab-files">
                                 # for (var l = 0; l < Languages[j].Files.length; l++) { # 
                                         #   if (Languages[j].Files[l].Size == 0 ) {#

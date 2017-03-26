@@ -124,6 +124,22 @@ $.fn.brsODataUI = function(options) {
                     if (tab.size() > 0) break;
                  }
                }
+               $(".brs-tab-description", this).kendoPanelBar(
+                {
+                  animation: {
+                        // fade-out closing items over 1000 milliseconds
+                        collapse: {
+                            duration: 1000,
+                            effects: "fadeOut"
+                        },
+                      // fade-in and expand opening items over 500 milliseconds
+                      expand: {
+                          duration: 500,
+                          effects: "expandVertical fadeIn"
+                      }
+                  }
+                }
+               );
                $(this).kendoTabStrip().data("kendoTabStrip").activateTab(tab);
             }
           );
