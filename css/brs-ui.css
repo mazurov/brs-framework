@@ -15,10 +15,15 @@ tbody.k-widget{
   width: 100%;
 }
 
+
+
 .brs-documents td {
   vertical-align: top;
 }
 
+.brs-rec{
+  margin-top: 15px;
+}
 
 .brs-rec div {
   display: inline;

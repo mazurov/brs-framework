@@ -47,7 +47,6 @@ $.fn.brsODataUIBuilder = function(filters) {
     
     
     var rowTemplate = `<tr>
-
             <td>
                     <div class="brs-rec">
                         <div class="brs-rec-convention">#= Convention#, </div>
@@ -91,7 +90,6 @@ $.fn.brsODataUIBuilder = function(filters) {
                         </div>
                     # } #
                 </div>
-                <hr/>
             </td>
         </tr>`;
     // console.debug(rowTemplate);
