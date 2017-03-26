@@ -1,4 +1,8 @@
 
+tbody.k-widget{
+  background-color: transparent;  
+}
+
 .brs-documents-pager .k-icon {
   margin-top: 4px;
 }
