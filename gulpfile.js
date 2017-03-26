@@ -37,7 +37,7 @@ gulp.task('serve', ['scripts'],
             port: 3000
         });
         gulp.watch(['src/*.js'], ['scripts', reload]);
-        gulp.watch(['*.html'], [reload]);
+        gulp.watch(['*.html', 'css/*.css'], [reload]);
     }
 );
 

@@ -35,10 +35,6 @@ $.fn.brsODataUIBuilder = function(filters) {
                     <table>
                         <thead>
                             <tr>
-                                <!--<th>UNnumber</th>-->
-                                <th>Treaty</th>
-                                <th>Country</th>
-                                <th>Publication Date</th>
                                 <th>&nbsp;</th>
                             </tr>
                         </thead>
@@ -51,10 +47,13 @@ $.fn.brsODataUIBuilder = function(filters) {
     
     
     var rowTemplate = `<tr>
-            <td>#= Convention#</td>
-            <td>#= CountryFull != null? CountryFull: "" #</td>
-            <td>#= PublicationDate != null? kendo.toString(kendo.parseDate(PublicationDate), "y"): "" #</td>
+
             <td>
+                    <div class="brs-rec">
+                        <div class="brs-rec-convention">#= Convention#, </div>
+                        <div class="brs-rec-country">#= CountryFull != null? CountryFull: "" #, </div>
+                        <div class="brs-rec-pubdate">#= PublicationDate != null? kendo.toString(kendo.parseDate(PublicationDate), "y"): "" #</div>
+                    </div>
                     <div class="brs-tabstrip">
                     <ul>
                             #  for (var j = 0; j < Languages.length; j++) { #
@@ -92,6 +91,7 @@ $.fn.brsODataUIBuilder = function(filters) {
                         </div>
                     # } #
                 </div>
+                <hr/>
             </td>
         </tr>`;
     // console.debug(rowTemplate);

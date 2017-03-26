@@ -15,6 +15,17 @@
   vertical-align: top;
 }
 
+.brs-rec {
+  font-size: 120%;
+}
+.brs-rec div {
+  display: inline;
+}
+
+.brs-rec-pubdate{
+  color: grey;
+}
+
 .brs-tab-title{
   font-weight: bold;
   font-size: normal;
