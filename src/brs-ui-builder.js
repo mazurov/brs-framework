@@ -48,7 +48,7 @@ $.fn.brsODataUIBuilder = function(filters) {
     
     var rowTemplate = `<tr>
             <td>
-                    <div class="brs-rec">
+                    <div class="brs-rec k-block">
                         <div class="brs-rec-convention">#= Convention#, </div>
                         <div class="brs-rec-country">#= CountryFull != null? CountryFull: "" #, </div>
                         <div class="brs-rec-pubdate">#= PublicationDate != null? kendo.toString(kendo.parseDate(PublicationDate), "y"): "" #</div>
