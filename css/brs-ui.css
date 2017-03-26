@@ -15,11 +15,10 @@
   vertical-align: top;
 }
 
-.brs-rec {
-  font-size: 120%;
-}
+
 .brs-rec div {
   display: inline;
+  font-size: 120%;
 }
 
 .brs-rec-pubdate{
