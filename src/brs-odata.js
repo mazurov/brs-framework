@@ -98,7 +98,7 @@ BrsOData.prototype.conventionsDataSource = function() {
 BrsOData.prototype.languagesDataSource = function() {
   var langs = $.merge([], _.filter(BrsOData.LANGUAGES, function(lang){
     return lang.inbrs;}));
-  // langs.sort(window.languages.sort);
+  langs.sort(window.languages.sort);
   return new kendo.data.DataSource({
     type: "json",
     data: langs,
