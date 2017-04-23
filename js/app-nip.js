@@ -40,7 +40,7 @@ $(document).ready(function() {
     }
  ];
 
-$("#brs-builder-nip").brsODataUIBuilder(filters_nip);
+$("#brs-builder-nip").brsODataUIBuilder({filters: filters_nip, showDescriptions: false});
 
 
 });

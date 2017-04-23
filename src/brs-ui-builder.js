@@ -6,7 +6,15 @@
  *      selected: ["basel"]
  * }
  */
-$.fn.brsODataUIBuilder = function(filters) {
+$.fn.brsODataUIBuilder = function(options) {
+    var defaults = {
+        filters: [],
+        showDescriptions: true
+    };
+
+    var actual = $.extend({}, defaults, options || {});
+
+    var filters = actual['filters'];
     var result = '<div id="brs-filters">';
     
     var odata = new BrsOData('http://informea.pops.int/BrsDocuments/MFiles.svc/',
@@ -22,7 +30,7 @@ $.fn.brsODataUIBuilder = function(filters) {
     var predefined = {};
     for(var f in filters) {
         var filter = filters[f];
-        var show = filter.show === undefined || filter.show == true;
+        var show = filter.show === undefined || filter.show === true;
         if (show) {
             result += filterTmpl($.extend({list: false}, filter));
         }
@@ -49,9 +57,9 @@ $.fn.brsODataUIBuilder = function(filters) {
     var rowTemplate = `<tr>
             <td>
                     <div class="brs-rec k-block">
-                        <div class="brs-rec-convention">#= Convention#, </div>
+                        <div class="brs-rec-convention">#= ConventionFull#, </div>
                         <div class="brs-rec-country">#= CountryFull != null? CountryFull: "" #, </div>
-                        <div class="brs-rec-pubdate">#= PublicationDate != null? kendo.toString(kendo.parseDate(PublicationDate), "y"): "" #</div>
+                        <div class="brs-rec-pubdate">Submission date: #= PublicationDate != null? kendo.toString(kendo.parseDate(PublicationDate), "y"): "" #</div>
                     </div>
                     <div class="brs-tabstrip">
                     <ul>
@@ -63,8 +71,10 @@ $.fn.brsODataUIBuilder = function(filters) {
                         <div>
                             <div class="brs-tab-content brs-tab-title">#= Languages[j].Title #</div>
                             <!--<div class="brs-tab-content brs-tab-unnumber">#: UnNumber #</div>-->
-                            
-                            # if (Languages[j].Description){ # 
+        `;
+   
+   if (actual.showDescriptions) {
+        rowTemplate += `    # if (Languages[j].Description){ # 
                                 <ul class="brs-tab-content brs-tab-description">
                                     <li>Description
                                     <ul>
@@ -72,7 +82,10 @@ $.fn.brsODataUIBuilder = function(filters) {
                                     </ul>
                                 </ul>
                             # } #
-                           
+                  `;
+    }
+
+    rowTemplate += `                   
                             <div class="brs-tab-content brs-tab-files">
                                 # for (var l = 0; l < Languages[j].Files.length; l++) { # 
                                         #   if (Languages[j].Files[l].Size == 0 ) {#

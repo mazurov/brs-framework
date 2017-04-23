@@ -6,7 +6,13 @@ var BrsOData = function(url, urlProfiles, done, fail) {
   this.done = done || function() {};
 };
 
-BrsOData.CONVENTIONS = [{name: "basel"}, {name: "rotterdam"}, {name: "stockholm"}];
+BrsOData.CONVENTIONS = [
+  {name: "basel", fullName: "Basel Convention" },
+  {name: "rotterdam", fullName: "Rotterdam Convention"},
+  {name: "stockholm", fullName: "Stockholm Convention"}
+];
+
+BrsOData.CONVENTIONS_BY_NAME = _.keyBy(BrsOData.CONVENTIONS, "name");
 
 BrsOData.LANGUAGES = window.languages.getAllLanguageCode().map(function(langcode){
   var info = window.languages.getLanguageInfo(langcode);
@@ -58,7 +64,7 @@ BrsOData.prototype.getDataSource = function(options) {
         var handler = options.handler || function(data) { return data; };
         return handler(data.value? data.value: data.d.results); 
       },
-      total: function(data) { return data["odata.count"]?data["odata.count"]:data.d["__count"]; },
+      total: function(data) { return data["odata.count"]?data["odata.count"]:data.d.__count; },
       serverPaging: true,
       model: {fields: options.fields}
     }
@@ -124,7 +130,8 @@ BrsOData.prototype.yearsDataSource = function(startYear) {
 };
 BrsOData.prototype.listTypeToField = function(name) {
   return BrsOData.LISTTYPETOFIELD[name];
-}
+};
+
 BrsOData.prototype.listsDataSources = function() {
   var ds = this.listTypesDataSource();
   var self = this;
@@ -164,7 +171,7 @@ BrsOData.prototype._odataOr = function(field, values, op) {
     exp.push(field + " " + op + " " + quote + values[i] + quote);
   }
   return exp.join(' or ');
-}
+};
 
 BrsOData.prototype._odataExpandOr = function(expand, field, values) {
   var exp = [];
@@ -176,13 +183,14 @@ BrsOData.prototype._odataExpandOr = function(expand, field, values) {
      exp.push(expand + "/any(x: x/" + field + " eq " + strValue + ")");
   }
   return exp.join(' or ');
-}
+};
 
 
 BrsOData.prototype.isGUID = function(value){
   var regexGuid = /^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$/gi;
   return regexGuid.test(value);
-}
+};
+
 BrsOData.prototype.documentsDataSource = function(options) {
   var andFilter = [];
   var filter = '';
@@ -212,7 +220,7 @@ BrsOData.prototype.documentsDataSource = function(options) {
             }
             break;
           default:
-            var expand = this.listTypeToField(type)
+            var expand = this.listTypeToField(type);
             andFilter.push('(' + this._odataExpandOr(expand, 'ListPropertyId', values) + ')');
             break;
         }
@@ -231,6 +239,9 @@ BrsOData.prototype.documentsDataSource = function(options) {
       sort: options.sort,
       handler: (data) => { // Group Titles, Descriptions, and Files by Language
         for (var row of data) {
+          // ------------------------------------------------------------------
+          // Languages
+          // ------------------------------------------------------------------
           let languages = [];
           for (var title of row.Titles){
             let record  = {};
@@ -258,6 +269,11 @@ BrsOData.prototype.documentsDataSource = function(options) {
               }
             );
           row.Languages = languages;
+          // ------------------------------------------------------------------
+          // Full convention name
+          // ------------------------------------------------------------------
+          row.ConventionFull = BrsOData.CONVENTIONS_BY_NAME[row.Convention].fullName;
+          // ------------------------------------------------------------------
         }
         return data;
       }

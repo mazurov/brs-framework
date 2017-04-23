@@ -35,7 +35,7 @@ $(document).ready(function() {
 
  ];
 
-$("#brs-builder-leg").brsODataUIBuilder(filters_leg);
+$("#brs-builder-leg").brsODataUIBuilder({filters: filters_leg});
 
 });
 

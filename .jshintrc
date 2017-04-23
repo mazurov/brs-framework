@@ -4,8 +4,10 @@
   "unused": true,
   "globals": {
     "jQuery": true,
+    "$": true,
     "kendo": true,
     "console": true,
+    "window": true,
     "_": true
   }
 }

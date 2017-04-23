@@ -117,6 +117,12 @@
 		"sC": 1,
 		"tS": 0
 		},
+	"\/js\/brs.js.map": {
+		"ft": 8192,
+		"oA": 2,
+		"oAP": "\/js\/brs.js.map",
+		"oF": 0
+		},
 	"\/karma.conf.js": {
 		"ft": 64,
 		"mi": 1,

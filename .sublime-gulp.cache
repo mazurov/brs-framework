@@ -1,0 +1,1 @@
+{"/Users/amazurov/dev/brs-odata/gulpfile.js":{"sha1":"1e28a30d2c758b4e8ac80cb9458e6b827fc171f1","tasks":{"scripts":{"name":"scripts","dependencies":""},"serve":{"name":"serve","dependencies":"scripts"},"default":{"name":"default","dependencies":"serve"}}}}
