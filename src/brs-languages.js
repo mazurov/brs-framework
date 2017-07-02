@@ -146,6 +146,7 @@
       "mt": ["Maltese", "bil-Malti"],
       "my": ["Burmese", "Myanmasa"],
       "na": ["Nauruan", "Dorerin Naoero"],
+      "nb": ["Norwegian", "Norsk (bokmål / riksmål)"],
       "nd": ["North Ndebele", "Sindebele"],
       "ne": ["Nepali", "नेपाली"],
       "ng": ["Ndonga", "Oshiwambo"],
