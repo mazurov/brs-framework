@@ -16,7 +16,7 @@ $(document).ready(function() {
     {
        type: "programme",
        title: "Programme",
-       selected: ["277ffdca-7b64-4516-a888-cc4027b19a40"],
+       selected: ["e293e74d-64d0-e311-bf02-0050569d5de3"],
        list: true,
        show: false
     },
