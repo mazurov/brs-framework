@@ -1,0 +1,20 @@
+{
+  "name": "Node.js 10 Development Environment",
+  "image": "mcr.microsoft.com/vscode/devcontainers/javascript-node:0-10",
+  "postCreateCommand": "npm install && npm install --global gulp-cli",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "extensions": ["dbaeumer.vscode-eslint"]
+      }
+    }
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Application",
+      "onAutoForward": "notify"
+    }
+  }
+}
