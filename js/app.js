@@ -1,9 +1,9 @@
 $(document).ready(function() {
   var done = function(results) { console.log(results); };
 
-  var fail = function() { console.error("SASHA", arguments); };
-  var odata = new BrsOData('http://informea.pops.int/BrsDocuments/MFiles.svc/',
-  'http://informea.pops.int/CountryProfiles/bcTreatyProfile.svc',
+  var fail = function() { console.error("ERROR", arguments); };
+  var odata = new BrsOData('https://informea.pops.int/BrsDocuments/MFiles.svc/',
+  'https://informea.pops.int/CountryProfiles/bcTreatyProfile.svc',
                            done, fail);
   $("body").brsODataUI(
     {

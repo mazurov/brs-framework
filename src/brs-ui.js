@@ -27,7 +27,7 @@ $.fn.brsODataUI = function(options) {
     pageSize: options.pageSize || 10,
     sort: { field: "PublicationDate", dir: "desc"}
   };
-
+  
   service.listsDataSources().then(_processLists);
   _processConventions(service.conventionsDataSource());
   _processLanguages(service.languagesDataSource());

@@ -17,8 +17,8 @@ $.fn.brsODataUIBuilder = function(options) {
     var filters = actual['filters'];
     var result = '<div id="brs-filters">';
     
-    var odata = new BrsOData('http://informea.pops.int/BrsDocuments/MFiles.svc/',
-        'http://informea.pops.int/CountryProfiles/bcTreatyProfile.svc');
+    var odata = new BrsOData('https://informea.pops.int/BrsDocuments/MFiles.svc/',
+        'https://informea.pops.int/CountryProfiles/bcTreatyProfile.svc');
 
     
     var filterTmpl = kendo.template(
@@ -105,7 +105,7 @@ $.fn.brsODataUIBuilder = function(options) {
                 </div>
             </td>
         </tr>`;
-    // console.debug(rowTemplate);
+    console.log(result);
     $(this).html(result);
     $(this).brsODataUI({service: odata, predefined: predefined, template: rowTemplate});
 };
